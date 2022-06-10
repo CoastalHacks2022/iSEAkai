@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+   /* display: flex;
+     justify-content: center;
+    align-items: center; */
+    background: linear-gradient(to bottom, rgb(173, 214, 228), rgb(43, 43, 75));
+}
+
+#lightGreen {
+    background-image: url("../Assets/images/lightgreenkelp.png");
+    background-repeat: repeat-x;
+    background-size: contain;
+    width: 100vw;
+    width: 100vw;
+    height: 20%;
+    animation: oscillate-lr 5s infinite;
+}
+
+#darkGreen {
+    background-image: url("../Assets/images/darkgreenkelp.png");
+    background-size: contain;
+    background-repeat: repeat-x;
+    width: 100vw;
+    height: 20%;
+    animation: oscillate-rl 5s infinite;
+}
+
+.seaweed {
+    position: absolute;
+    bottom: 0%;
+}
+
+.on-top {
+    z-index: 4;
+}
+
+@keyframes oscillate-lr {
+    0% { margin-left: 1%;}
+    50% {margin-left: 1%;}
+    100% {margin: 0%}
+}
+
+@keyframes oscillate-rl {
+    0% { left: 0.5%;}
+    50% {left: 1%;}
+    75% {left: 0.5%}
+    900% {left: 0.25%}
+    100% {left: 0%}
+}
