@@ -15,7 +15,6 @@ body {
     background-repeat: repeat-x;
     background-size: contain;
     width: 100vw;
-    width: 100vw;
     height: 20%;
     animation: oscillate-lr 5s infinite;
 }
@@ -31,7 +30,7 @@ body {
 
 .seaweed {
     position: absolute;
-    bottom: 0%;
+    bottom: -5%;
 }
 
 .on-top {
@@ -39,9 +38,11 @@ body {
 }
 
 @keyframes oscillate-lr {
-    0% { margin-left: 1%;}
-    50% {margin-left: 1%;}
-    100% {margin: 0%}
+    0% {right: 0.5%;}
+    50% {right: 1%;}
+    75% {right: 0.5%}
+    900% {right: 0.25%}
+    100% {right: 0%}
 }
 
 @keyframes oscillate-rl {
@@ -50,4 +51,9 @@ body {
     75% {left: 0.5%}
     900% {left: 0.25%}
     100% {left: 0%}
+}
+
+canvas {
+    width: 100vw;
+    height: 100vh;
 }
