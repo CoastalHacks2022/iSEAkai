@@ -13,12 +13,10 @@ window.onload = function () {
     const mouse = {
         x: canvas.width / 2,
         y: canvas.height / 2,
-        click: false,
     };
     let gameFrame = 0;
 
     canvas.addEventListener("mousemove", function (e) {
-        mouse.click = true;
         mouse.x = e.clientX - canvas.offsetLeft
         mouse.y = e.clientY - canvas.offsetTop
     });
@@ -39,18 +37,16 @@ window.onload = function () {
             this.frameY = 0;
             this.frame = 0;
             this.spriteWidth = 135;
-            this.spriteHeight = 1000;
+            this.spriteHeight = 1400;
         }
         update(){
             const dx = this.x - mouse.x;
             const dy = this.y - mouse.y;
             if (mouse.x != this.x){
                 this.x -= dx/20;
-                this.moving = true;
             }
             if (mouse.y != this.y){
                 this.y -= dy/20;
-                this.moving = true;
             }
             if (this.x < 0) this.x = 0;
             if (this.x > canvas.width) this.x = canvas.width;
@@ -58,13 +54,6 @@ window.onload = function () {
             if (this.y > canvas.height) this.y = canvas.height;
         }
         draw(){
-            if (mouse.click){
-                ctx.lineWidth = 0.2;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.stroke();
-            }
             if (gameFrame % 10 == 0) {
                 this.frame++;
                 if (this.frame >= 12) this.frame = 0;
@@ -80,17 +69,15 @@ window.onload = function () {
                 } else this.frameY = 0;
             }
           
-            ctx.fillStyle = 'black';
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.beginPath();
             ctx.arc(0, 0, this.radius, 0, Math.PI * 360);
+            ctx.fillStyle = "rgba(200, 215, 2, 0.3)";
             ctx.fill();
-            if (this.x >= mouse.x){
-                ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
-            } else {
-                ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
-            }
+            if (this.x >= mouse.x) ctx.drawImage(playerLeft,  0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
+            else ctx.drawImage(playerRight, 0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
+
             ctx.restore();
         }
     }
@@ -170,9 +157,9 @@ window.onload = function () {
 
     // animation loop
     function animate() {
+        player.update();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         handleOil();
-        player.update();
         player.draw();
         gameFrame += 1;
         requestAnimationFrame(animate);
