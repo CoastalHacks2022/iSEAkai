@@ -6,18 +6,44 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>iSEAkai</title>
         <link rel="stylesheet" href="oilSpill.css" />
+            <!-- Google Font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+        rel="stylesheet"
+        />
     </head>
     <body>
+        <audio id="bgm" src="../Assets/sounds/underwater.mp3" preload="auto" autoplay="true" loop="true"></audio>
+        <audio id="bloop" src="../Assets/sounds/bloop.mp3" preload="auto"></audio>
         <script src="oilSpill.js"></script>
-        <div>
-            <audio id="bgm" src="../Assets/sounds/underwater.mp3" preload="auto" autoplay="true"></audio>
-            <audio id="bloop" src="../Assets/sounds/bloop.mp3" preload="auto"></audio>
-            <p id="score">Score: 0</p>
+            <div class="modal" id="instructionsWrapper">
+                <div id="startInstructions">
+                    <img src="../Assets/images/oilspill.png" height="500">
+                    <p>Human activity has resulted in the pollution of marine ecosystems worldwide. Oil spills are an example of pollution caused by humans. Use Rozxie's kelp hair to collect as much oil as you can! The active portion of her hair has a round circle around it.</p>
+                    <button id="startBtn">Start</button>
+                </div>
+            </div>
+            <div id="gameStats">
+                <div id="clock">
+                    <svg
+                      viewBox="0 0 120 120"
+                      class="chart-gauge"
+                      fill="none"
+                      stroke-width="4"
+                    >
+                      <circle class="timer-backdrop" r="40" cx="60" cy="60"></circle>
+                      <circle class="timer-gauge" r="40" cx="60" cy="60"></circle>
+                      <text y="50%" x="50%" id="gameTimer" class="timer-time">15s</text>
+                    </svg>             
+                </div>
+                <p id="score">Score: 0</p>
+            </div>
             <canvas id="gameContainer" ></canvas>
             <div class="seaweed" id="lightGreen" style="margin-right: -55px; z-index: -1;"></div>
             <div class="seaweed" id="darkGreen" style="margin-left: -35px;"></div>
             <div class="seaweed on-top" id="lightGreen"></div>
             <div class="seaweed on-top" id="darkGreen"></div>
-        </div>
     </body>
 </html>

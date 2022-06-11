@@ -1,15 +1,63 @@
 window.onload = function () {
-    // Play sounds
+    const scoreText = document.getElementById("score");
+    const startButton = document.getElementById("startBtn");
     const bloop = document.getElementById("bloop");
-    
     const canvas = document.getElementById("gameContainer");
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     const ctx = canvas.getContext("2d");
+    const gameTimerGauge = document.querySelector(".timer-gauge");
+    const gameTimer = document.getElementById("gameTimer");
+    const gameStats = document.getElementById("gameStats");
+    const modal = document.getElementById("instructionsWrapper");
+    const startInstructions = document.getElementById("startInstructions");
 
-    const scoreText = document.getElementById("score");
     let score = 0;
+    let player;
+    let gameTimerInterval = null;
 
+    startButton.addEventListener("click", startGame)
+    
+    function startGame() {
+        modal.style.display = "none";
+        gameStats.style.display = "flex";
+        createTimer();
+        player = new Player();
+        animate();
+    }
+
+    function createTimer() {
+        gameTimer.innerText = "15s";
+        let sec = 0;
+        gameTimerInterval = setInterval(startGameTimer, 1000);
+        function startGameTimer() {
+            gameTimer.textContent = 15 - sec + "s";
+            if (sec === 15) {
+                sec = 0;
+                endGame(false);
+                gameTimer.textContent = 15 - sec + "s";
+                gameTimer.classList.remove("warning");
+                gameTimerGauge.classList.remove("ticking");
+            } else {
+                if (sec === 1) {
+                gameTimerGauge.classList.add("ticking");
+                }
+                if (sec > 9) {
+                gameTimer.classList.add("warning");
+                }
+                sec++;
+            }
+        }
+    }
+
+    function endGame() {
+        bgm.stop();
+        clearInterval(gameTimerInterval);
+        gameStats.style.display = "none";
+        modal.style.display = "block";
+        modal.removeChild(startButton);
+    }
+    
     const mouse = {
         x: canvas.width / 2,
         y: canvas.height / 2,
@@ -20,6 +68,7 @@ window.onload = function () {
         mouse.x = e.clientX - canvas.offsetLeft
         mouse.y = e.clientY - canvas.offsetTop
     });
+
     // Make image follow mouse
     const playerLeft = new Image();
     playerLeft.src = "../Assets/images/seaweedhair-l.svg";
@@ -81,7 +130,6 @@ window.onload = function () {
             ctx.restore();
         }
     }
-    const player = new Player();
 
     // Make oil droplets
     const oilArray = [];
@@ -146,7 +194,7 @@ window.onload = function () {
         if (oilArray[i]) {
             if (!oilArray[i].counted) score++;
             bloop.play();
-            scoreText.innerText = `Score : ${score}`;
+            scoreText.innerText = `Score: ${score}`;
             oilArray[i].counted = true;
             oilArray[i].frameX++;
             if (oilArray[i].frameX > 7) oilArray[i].pop = true;
@@ -164,7 +212,6 @@ window.onload = function () {
         gameFrame += 1;
         requestAnimationFrame(animate);
     }
-    animate();
 
     window.addEventListener("resize", function () {
         canvas.width = window.innerWidth
