@@ -16,6 +16,7 @@ var Engine = Matter.Engine,
   MouseConstraint = Matter.MouseConstraint,
   Mouse = Matter.Mouse,
   Vector = Matter.Vector,
+  Svg = Matter.Svg,
   Events = Matter.Events;
 
 window.onload = function () {
@@ -34,7 +35,7 @@ window.onload = function () {
 
   // first render variable
   var render = Render.create({
-    element: document.body,
+    element: document.getElementById("canvasContainer"),
     engine: engine,
     canvas: fishCanvas,
     options: {
@@ -43,7 +44,8 @@ window.onload = function () {
       showAngleIndicator: true,
       showCollisions: true,
       showVelocity: true,
-      wireframes: true,
+      wireframes: false,
+      background: "#03a6e1",
     },
     // options: {
     //     width: window.innerWidth - 20,
@@ -55,8 +57,12 @@ window.onload = function () {
 
   var defaultCategory = 0x0001,
     tentacleCategory = 0x0002,
-    greenCategory = 0x0004,
-    blueCategory = 0x0008;
+    netCategory = 0x0004,
+    dolphinCategory = 0x0008;
+    turtleCategory = 0x0010;
+    sharkCategory = 0x0020;
+    stingrayCategory = 0x0040;
+    whalesharkCategory = 0x0040;
 
   // add mouse control
   var mouse = Mouse.create(render.canvas),
@@ -75,85 +81,88 @@ window.onload = function () {
   // keep the mouse in sync with rendering
   render.mouse = mouse;
 
-
   // BORDERS
   // define a static ground (the *2 for width is cause canvas width is half the actual thing apparently)
-  var ground = Bodies.rectangle(
-    render.canvas.width / 2,
-    render.canvas.height - 25,
-    render.canvas.width,
-    50,
-    {
-      collisionFilter: {
-        mask: defaultCategory | tentacleCategory
-      },
-      isStatic: true,
-      render: {
-        fillStyle: "#36c247",
-        strokeStyle: "green",
-        lineWidth: 0,
-      },
-    }
-  );
+  //   var ground = Bodies.rectangle(
+  //     render.canvas.width / 2,
+  //     render.canvas.height - 25,
+  //     render.canvas.width,
+  //     50,
+  //     {
+  //       collisionFilter: {
+  //         mask: defaultCategory | tentacleCategory
+  //       },
+  //       isStatic: true,
+  //       render: {
+  //         fillStyle: "#36c247",
+  //         strokeStyle: "green",
+  //         lineWidth: 0,
+  //       },
+  //     }
+  //   );
 
-  var ceiling = Bodies.rectangle(
-    render.canvas.width / 2,
-    10,
-    render.canvas.width,
-    50,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#36c247",
-        strokeStyle: "green",
-        lineWidth: 0,
-      },
-    }
-  );
+  //   var ceiling = Bodies.rectangle(
+  //     render.canvas.width / 2,
+  //     10,
+  //     render.canvas.width,
+  //     50,
+  //     {
+  //       isStatic: true,
+  //       render: {
+  //         fillStyle: "#36c247",
+  //         strokeStyle: "green",
+  //         lineWidth: 0,
+  //       },
+  //     }
+  //   );
 
-  var leftWall = Bodies.rectangle(
-    10,
-    render.canvas.height / 2,
-    50,
-    render.canvas.height,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#36c247",
-        strokeStyle: "green",
-        lineWidth: 0,
-      },
-    }
-  );
+  //   var leftWall = Bodies.rectangle(
+  //     10,
+  //     render.canvas.height / 2,
+  //     50,
+  //     render.canvas.height,
+  //     {
+  //       isStatic: true,
+  //       render: {
+  //         fillStyle: "#36c247",
+  //         strokeStyle: "green",
+  //         lineWidth: 0,
+  //       },
+  //     }
+  //   );
 
-  var rightWall = Bodies.rectangle(
-    render.canvas.width,
-    render.canvas.height / 2,
-    70,
-    render.canvas.height,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "#36c247",
-        strokeStyle: "green",
-        lineWidth: 0,
-      },
-    }
-  );
+  //   var rightWall = Bodies.rectangle(
+  //     render.canvas.width,
+  //     render.canvas.height / 2,
+  //     70,
+  //     render.canvas.height,
+  //     {
+  //       isStatic: true,
+  //       render: {
+  //         fillStyle: "#36c247",
+  //         strokeStyle: "green",
+  //         lineWidth: 0,
+  //       },
+  //     }
+  //   );
 
-  // TENTACLES
+  /////////////// TENTACLES ///////////////
 
   group = Body.nextGroup(true);
 
-  var numSegments = 14;
+  var numSegments = 25;
+  var startPoint = {
+    x: render.canvas.width / 2,
+    y: render.canvas.height + 10,
+  };
 
   var tentacleComposite = Composites.stack(
-    100,
-    50,
+    startPoint.x,
+    startPoint.y,
     numSegments,
     1,
     10,
-    10,
+    0,
     function (x, y) {
       return Bodies.rectangle(x - 20, y, 50, 20, {
         collisionFilter: {
@@ -172,85 +181,52 @@ window.onload = function () {
     }
   );
 
-  var tentacleTip = Bodies.rectangle(100 + 50 * numSegments + 100, 50, 50, 20, {
-    collisionFilter: {
-          category: tentacleCategory,
-          group: group,
-    },
-    render: {
-      strokeStyle: "#ffffff",
-      sprite: {
-        texture: "../assets/images/tentacleTipRotated.png",
-        xScale: 0.15,
-        yScale: 0.2,
+  var tentacleTip = Bodies.rectangle(
+    startPoint.x + 50 * numSegments + 100,
+    startPoint.y,
+    50,
+    20,
+    {
+      collisionFilter: {
+        category: tentacleCategory,
+        group: group,
       },
-    },
-    chamfer: 5,
-  });
+      render: {
+        strokeStyle: "#ffffff",
+        sprite: {
+          texture: "../assets/images/tentacleTipRotated.png",
+          xScale: 0.15,
+          yScale: 0.2,
+        },
+      },
+      chamfer: 5,
+    }
+  );
 
   Composite.add(tentacleComposite, tentacleTip);
 
   var tentacleEnd = Bodies.circle(
-    100 + 50 * numSegments + 100 + 50,
-    50,
-    10,
+    startPoint.x + 50 * numSegments + 100 + 50,
+    startPoint.y,
+    5,
     {
-        collisionFilter: {
-            category: tentacleCategory,
-            group: group,
-        },
-        render: {
-            strokeStyle: "#ffffff",
-            // visible: false,
-        }
+      collisionFilter: {
+        category: tentacleCategory,
+        group: group,
+      },
+      render: {
+        strokeStyle: "#ffffff",
+        visible: false,
+      },
     }
-  )
+  );
 
   Composite.add(tentacleComposite, tentacleEnd);
 
-
-  ///////// JUNK CODE /////////
-
-//   staticBody = Bodies.circle(100 + 50 * numSegments + 300, 0, 30, {
-//     isSensor: true,
-//     isStatic: true,
-//     collisionFilter: {
-//         category: tentacleCategory,
-//         group: group,
-//       },
-
-//     // collisionFilter: {
-//     //   group: group,
-//     // },
-//     render: {
-//       fillStyle: "#fabcfe",
-//       visible: true,
-//     },
-//   });
-
-//   var constraintTip = Constraint.create({
-//     bodyA: tentacleComposite.bodies[tentacleComposite.bodies.length - 1],
-//     pointA: { x: 0, y: 0 },
-//     bodyB: staticBody,
-//     pointB: { x: 0, y: 0 },
-//     options: {
-//       length: 0,
-//       damping: 0.1,
-//       stiffness: 0.9,
-//       render: {
-//         visible: true,
-//       },
-//     },
-//     angularStiffness: 0,
-//     angularDamping: 0,
-//   });
-
-// Composite.add(tentacleComposite, staticBody);
-
-  ///////// JUNK CODE /////////
-
-
-  Composites.chain(tentacleComposite, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
+  Composites.chain(tentacleComposite, 0.3, 0, -0.3, 0, {
+    stiffness: 1,
+    length: 0,
+  });
 
   Composite.add(
     tentacleComposite,
@@ -262,92 +238,80 @@ window.onload = function () {
         y: tentacleComposite.bodies[0].position.y,
       },
       stiffness: 0.5,
-    //   angularStiffness: 1,
-    // angularDamping: 1,
+      //   angularStiffness: 1,
+      // angularDamping: 1,
     })
   );
 
 
+  /////////////// NET ///////////////
 
-//   Composite.add(tentacleComposite, constraintTip);
-  
+  var net = Bodies.rectangle(
+    render.canvas.width / 2 - 200,
+    render.canvas.height / 2 - 30,
+    render.canvas.width,
+    20,
+    {
+      collisionFilter: {
+        category: netCategory,
+        group: group,
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        sprite: {
+          texture: "../assets/images/netTexture.png",
+          xScale: 1.6,
+          yScale: 1.8,
+        },
+      },
+    }
+  );
+
+
+  /////////////// FISH ///////////////
+
+  var dolphin = Bodies.rectangle(
+    render.canvas.width / 2 - 200,
+    render.canvas.height / 2 - 30,
+    render.canvas.width,
+    20,
+    {
+      collisionFilter: {
+        category: greenCategory,
+        group: group,
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        sprite: {
+          texture: "../assets/images/dolphin.svg",
+          xScale: 1.6,
+          yScale: 1.8,
+        },
+      },
+    }
+  );
+
+  /////////////// EVENTS ///////////////
 
   Events.on(engine, "collisionStart", function (event) {
-    // console.log(mouseConstraint)
 
     var pairs = event.pairs;
 
-    // for (var i = 0, j = pairs.length; i != j; ++i) {
-    //     var pair = pairs[i];
-    //     if (pair.bodyA === collider || pair.bodyB === collider) {
-    //         if (pair.bodyA === ballHTML || pair.bodyB === ballHTML) {
-    //             inBucket.html = true;
-    //             console.log("html")
-    //         } else if (pair.bodyA === ballCSS || pair.bodyB === ballCSS) {
-    //             inBucket.css = true;
-    //             console.log("css")
-    //         } else if (pair.bodyA === ballJS || pair.bodyB === ballJS) {
-    //             inBucket.js = true;
-    //             console.log("js")
-    //         }
-    //     }
-    // }
-
-    // if (checkAllIn()) {
-    //     console.log("all in!");
-    //     // alert("all in!");
-    //     if (!spawnedBtn) {
-    //         spawnedBtn = true;
-    //         World.add(engine.world, [nextBtn]);
-
-    //         var msg = new SpeechSynthesisUtterance();
-    //         msg.text = "Now stir the soup to create the game";
-    //         msg.volume = 0.4;
-    //         window.speechSynthesis.speak(msg);
-    //     }
-
-    // }
   });
 
   Events.on(engine, "collisionEnd", function (event) {
     var pairs = event.pairs;
 
-    // for (var i = 0, j = pairs.length; i != j; ++i) {
-    //     var pair = pairs[i];
-    //     if (pair.bodyA === collider || pair.bodyB === collider) {
-    //         if (pair.bodyA === ballHTML || pair.bodyB === ballHTML) {
-    //             inBucket.html = true;
-    //             console.log("not html")
-    //         } else if (pair.bodyA === ballCSS || pair.bodyB === ballCSS) {
-    //             inBucket.css = true;
-    //             console.log("not css")
-    //         } else if (pair.bodyA === ballJS || pair.bodyB === ballJS) {
-    //             inBucket.js = true;
-    //             console.log("not js")
-    //         }
-    //     }
-    // }
   });
 
   Events.on(mouseConstraint, "mousedown", function (event) {
-    // if (mouseConstraint.body === nextBtn && checkAllIn()) {
-    //     location.replace("../intro/index.html");
-    // }
-    // if (textNotSpoken) {
-    //     textNotSpoken = false;
-    //     // play the audio
-    //     var msg = new SpeechSynthesisUtterance();
-    //     msg.text = "Sugar, spice and everything nice. \
-    //         These are the ingredients to make a perfect little game. \
-    //         Help us add the 3 items into the soup to create the game";
-    //     msg.volume = 0.4;
-    //     window.speechSynthesis.speak(msg);
-    //     var startAudio = new Audio('../bgm/duck.mp3');
-    //     startAudio.volume = 0.1;
-    //     startAudio.loop = true;
-    //     startAudio.play();
-    //     musicNotStarted = false;
-    // }
+
   });
 
   Events.on(engine, "afterUpdate", function () {
@@ -355,25 +319,33 @@ window.onload = function () {
       return;
     }
 
-    // Body.applyForce(tentacleEnd, tentacleEnd.position, {
-    //     x: (mouse.position.x - tentacleEnd.position.x) * 0.1,
-    //     y: (mouse.position.y - tentacleEnd.position.y) * 0.1,
-    // });
 
-    Body.setVelocity(tentacleEnd, {
+    if (
+      Math.abs(mouse.position.x - tentacleEnd.position.x) < 10 &&
+      Math.abs(mouse.position.y - tentacleEnd.position.y) < 10
+    ) {
+      Body.setVelocity(tentacleEnd, {
+        x: 0,
+        y: 0,
+      });
+
+
+    } else {
+      Body.setVelocity(tentacleEnd, {
         x: (mouse.position.x - tentacleEnd.position.x) * 0.1,
         y: (mouse.position.y - tentacleEnd.position.y) * 0.1,
-    });
-    
+      });
+    }
   });
 
   // add all of the bodies to the world
   World.add(engine.world, [
-    ground,
-    ceiling,
-    leftWall,
-    rightWall,
+    // ground,
+    // ceiling,
+    // leftWall,
+    // rightWall,
     tentacleComposite,
+    net,
     // circle,
     // constraintTip,
     // staticBody,
