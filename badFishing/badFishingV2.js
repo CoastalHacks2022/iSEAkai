@@ -16,7 +16,7 @@ var Engine = Matter.Engine,
   MouseConstraint = Matter.MouseConstraint,
   Mouse = Matter.Mouse,
   Vector = Matter.Vector,
-  Svg = Matter.Svg,
+  // Svg = Matter.Svg,
   Events = Matter.Events;
 
 window.onload = function () {
@@ -81,71 +81,7 @@ window.onload = function () {
   // keep the mouse in sync with rendering
   render.mouse = mouse;
 
-  // BORDERS
-  // define a static ground (the *2 for width is cause canvas width is half the actual thing apparently)
-  //   var ground = Bodies.rectangle(
-  //     render.canvas.width / 2,
-  //     render.canvas.height - 25,
-  //     render.canvas.width,
-  //     50,
-  //     {
-  //       collisionFilter: {
-  //         mask: defaultCategory | tentacleCategory
-  //       },
-  //       isStatic: true,
-  //       render: {
-  //         fillStyle: "#36c247",
-  //         strokeStyle: "green",
-  //         lineWidth: 0,
-  //       },
-  //     }
-  //   );
-
-  //   var ceiling = Bodies.rectangle(
-  //     render.canvas.width / 2,
-  //     10,
-  //     render.canvas.width,
-  //     50,
-  //     {
-  //       isStatic: true,
-  //       render: {
-  //         fillStyle: "#36c247",
-  //         strokeStyle: "green",
-  //         lineWidth: 0,
-  //       },
-  //     }
-  //   );
-
-  //   var leftWall = Bodies.rectangle(
-  //     10,
-  //     render.canvas.height / 2,
-  //     50,
-  //     render.canvas.height,
-  //     {
-  //       isStatic: true,
-  //       render: {
-  //         fillStyle: "#36c247",
-  //         strokeStyle: "green",
-  //         lineWidth: 0,
-  //       },
-  //     }
-  //   );
-
-  //   var rightWall = Bodies.rectangle(
-  //     render.canvas.width,
-  //     render.canvas.height / 2,
-  //     70,
-  //     render.canvas.height,
-  //     {
-  //       isStatic: true,
-  //       render: {
-  //         fillStyle: "#36c247",
-  //         strokeStyle: "green",
-  //         lineWidth: 0,
-  //       },
-  //     }
-  //   );
-
+  
   /////////////// TENTACLES ///////////////
 
   group = Body.nextGroup(true);
@@ -276,11 +212,11 @@ window.onload = function () {
   var dolphin = Bodies.rectangle(
     render.canvas.width / 2 - 200,
     render.canvas.height / 2 - 30,
-    render.canvas.width,
-    20,
+    50,
+    50,
     {
       collisionFilter: {
-        category: greenCategory,
+        category: dolphinCategory,
         group: group,
       },
       isStatic: true,
@@ -289,9 +225,9 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/dolphin.svg",
-          xScale: 1.6,
-          yScale: 1.8,
+          texture: "../assets/images/dolphin.png",
+          xScale: 0.5,
+          yScale: 0.5,
         },
       },
     }
@@ -346,6 +282,7 @@ window.onload = function () {
     // rightWall,
     tentacleComposite,
     net,
+    // dolphin,
     // circle,
     // constraintTip,
     // staticBody,
