@@ -22,6 +22,7 @@
     <title>iSEAkai</title>
 </head>
 <body>
+    <script src="start.js"></script>
     <audio src="Assets/sounds/waves.mp3" preload="auto" autoplay="true" loop="true"></audio>
     <header><h1><i class="fa-solid fa-fish"></i>&nbsp;iSEAkai&nbsp;<i class="fa-solid fa-fish"></i></h1></header>
     <div class="story">
@@ -29,9 +30,32 @@
             <img class="bottom" src="Assets/images/pose-close-eyes.png"/>
             <img class="top" src="Assets/images/pose.png"/>
         </div>
-        <div class="caption">
-            <p id="text"></p>
-        </div>        
+        <div class="story" id="start" style="display: none">
+            <div id="rozxie">
+                <img class="bottom" src="Assets/images/pose-close-eyes.png"/>
+                <img class="top" src="Assets/images/pose.png"/>
+            </div>
+            <div class="caption">
+                <p id="text">This is Rozxie. She LOVES going to the beach. She is an instagram influencer and her handle is @official_rozxie_lakynn. </p>                
+            </div>
+        </div>
+        <div class="story" id="litter" style="display: none">
+            <img id="image" src="Assets/images/litter.png"/>
+            <div class="caption">
+                <p id="text">The bad thing is, Rozxie is a litter bug...</p>                
+            </div>
+        </div>
+        <div class="story" id="coral" style="display: none">
+            <div id="rozxie">
+                <img class="bottom" src="Assets/images/selfie-text.png"/>
+                <img class="top" src="Assets/images/selfie.png"/>
+            </div>
+            <div class="caption">
+                <p id="text">And a massive narcissist...</p>                
+            </div>
+        </div>                 
     </div>
+    <button id="next">Next</button>
+    <button id="oilSpill" onclick="location.href = 'oilSpill/oilSpill.html'" style="display: none">Next</button>
 </body>
 </html>
