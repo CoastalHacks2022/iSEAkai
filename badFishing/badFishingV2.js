@@ -42,7 +42,7 @@ window.onload = function () {
       // showAngleIndicator: true,
       // showCollisions: true,
       // showVelocity: true,
-      wireframes: true,
+      wireframes: false,
     },
     // options: {
     //     width: window.innerWidth - 20,
@@ -51,6 +51,11 @@ window.onload = function () {
     //     showAngleIndicator: false,
     // }
   });
+
+  var defaultCategory = 0x0001,
+    tentacleCategory = 0x0002,
+    greenCategory = 0x0004,
+    blueCategory = 0x0008;
 
   // add mouse control
   var mouse = Mouse.create(render.canvas),
@@ -76,6 +81,9 @@ window.onload = function () {
     render.canvas.width,
     50,
     {
+      collisionFilter: {
+        mask: defaultCategory | tentacleCategory
+      },
       isStatic: true,
       render: {
         fillStyle: "#36c247",
@@ -144,6 +152,7 @@ window.onload = function () {
     function (x, y) {
       return Bodies.rectangle(x - 20, y, 50, 20, {
         collisionFilter: {
+          category: tentacleCategory,
           group: group,
         },
         render: {
@@ -154,14 +163,14 @@ window.onload = function () {
             yScale: 0.2,
           },
         },
-        chamfer: 5,
       });
     }
   );
 
   var tentacleTip = Bodies.rectangle(100 + 50 * numSegments + 100, 50, 50, 20, {
     collisionFilter: {
-      group: group,
+          category: tentacleCategory,
+          group: group,
     },
     render: {
       strokeStyle: "#ffffff",
@@ -172,17 +181,50 @@ window.onload = function () {
       },
     },
     chamfer: 5,
-  })
+  });
 
-  Composite.add(
-    ropeC,
-    tentacleTip
-  );
+  Composite.add(ropeC, tentacleTip);
 
-  
-  
+  staticBody = Bodies.circle(100 + 50 * numSegments + 300, 0, 3, {
+    // isSensor: true,
+    isStatic: true,
+    collisionFilter: {
+      category: defaultCategory,
+      // group: group,
+    },  
+
+    // collisionFilter: {
+    //   group: group,
+    // },
+    render: {
+      fillStyle: "#fabcfe",
+      visible: true,
+    },
+  });
+
+  var constraintTip = Constraint.create({
+    bodyA: ropeC.bodies[ropeC.bodies.length - 1],
+    pointA: { x: 0, y: 0 },
+    bodyB: staticBody,
+    pointB: { x: 0, y: 0 },
+    options: {
+      length: 0,
+      damping: 0.1,
+      stiffness: 0.9,
+      render: {
+        visible: true,
+      },
+    },
+    angularStiffness: 0,
+    angularDamping: 0,
+  });
+
+
+
+  // Composite.add(ropeC, staticBody);
 
   Composites.chain(ropeC, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
+
   Composite.add(
     ropeC,
     Constraint.create({
@@ -193,10 +235,17 @@ window.onload = function () {
         y: ropeC.bodies[0].position.y,
       },
       stiffness: 0.5,
+    //   angularStiffness: 1,
+    // angularDamping: 1,
     })
   );
 
+  Composite.add(ropeC, constraintTip);
+  
+
   Events.on(engine, "collisionStart", function (event) {
+    // console.log(mouseConstraint)
+
     var pairs = event.pairs;
 
     // for (var i = 0, j = pairs.length; i != j; ++i) {
@@ -272,8 +321,42 @@ window.onload = function () {
     // }
   });
 
+  Events.on(engine, "afterUpdate", function () {
+    if (!mouse.position.x) {
+      return;
+    }
+
+    Body.setVelocity(staticBody, {
+      // x: staticBody.position.x - mouse.position.x,
+      // y: staticBody.position.y - mouse.position.y,
+      x: 0,
+      y: 0,
+    });
+
+    //   Body.setAngle(tentacleTip, {
+    //     // x: staticBody.position.x - mouse.position.x,
+    //     // y: staticBody.position.y - mouse.position.y
+    //     x: 0,
+    //     y: 0
+    // })
+
+    Body.setPosition(staticBody, {
+      x: mouse.position.x,
+      y: mouse.position.y,
+    });
+  });
+
   // add all of the bodies to the world
-  World.add(engine.world, [ground, ceiling, leftWall, rightWall, ropeC]);
+  World.add(engine.world, [
+    ground,
+    ceiling,
+    leftWall,
+    rightWall,
+    ropeC,
+    // circle,
+    // constraintTip,
+    staticBody,
+  ]);
 
   // fit the render viewport to the scene
   Render.lookAt(render, {
@@ -282,7 +365,7 @@ window.onload = function () {
   });
 
   // run the engine
-  Matter.Runner.run(engine);
+  Runner.run(engine);
 
   // run the renderer
   Render.run(render);
