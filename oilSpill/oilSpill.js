@@ -83,10 +83,9 @@ window.onload = function () {
             ctx.fillStyle = 'black';
             ctx.save();
             ctx.translate(this.x, this.y);
-            ctx.rotate(this.angle);
-            //ctx.beginPath();
-            //ctx.arc(0, 0, this.radius, 0, Math.PI * 360);
-            //ctx.fill();
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 360);
+            ctx.fill();
             if (this.x >= mouse.x){
                 ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth * 0.8, this.spriteHeight * 0.8);
             } else {
