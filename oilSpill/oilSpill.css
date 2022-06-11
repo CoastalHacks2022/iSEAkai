@@ -7,7 +7,7 @@ body {
     justify-items: center;
     align-items: center;
     background: linear-gradient(to bottom, rgb(173, 214, 228), rgb(43, 43, 75));
-    font-family: Fredoka One;
+    font-family: 'Original Surfer', cursive;
     font-size: 20px;
     margin: 0;
     padding: 0;
@@ -175,7 +175,7 @@ button {
     border-radius: 20px;
     width: 200px;
     height: 50px;
-    font-family: Fredoka One;
+    font-family: 'Original Surfer', cursive;
     color: white;
     font-size: 20px;
     cursor: pointer;
