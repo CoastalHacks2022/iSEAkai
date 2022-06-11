@@ -24,7 +24,7 @@ h1 {
     height: 100%;
 }
 
-#rozxie .bottom {
+#rozxie .bottom, .bottom{
     opacity: 1;
     min-height: 60vh;
     max-height: 80vh;
@@ -32,7 +32,7 @@ h1 {
     position: absolute;
 }
 
-#rozxie .top {
+#rozxie .top, .top{
     -webkit-animation: anim 11s infinite alternate;
     animation: anim 1s infinite alternate;
     min-height: 60vh;
@@ -111,8 +111,8 @@ button:hover {
     font-size: 20px;
 }
 
-#turtle {
-    padding: 10%;
+#animate {
+    padding: 5%;
     display: flex;
     width: 100vw;
     justify-content: center;
