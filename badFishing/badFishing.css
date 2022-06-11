@@ -15,6 +15,8 @@
 .titleTxt {
     font-size: 30px;
     font-weight: bold;
+    font-family: 'Original Surfer', cursive;
+    text-align: center;
 }
 
 body {
