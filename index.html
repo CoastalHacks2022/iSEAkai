@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+    rel="stylesheet"
+    />
+    <!-- Icon-->
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+    integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>iSEAkai</title>
+</head>
+<body>
+    <script src="start.js"></script>
+    <audio src="Assets/sounds/waves.mp3" preload="auto" autoplay="true" loop="true"></audio>
+    <audio id="scream" src="Assets/sounds/scream.mp3" preload="auto"></audio>
+    <header><h1><i class="fa-solid fa-fish"></i>&nbsp;iSEAkai&nbsp;<i class="fa-solid fa-fish"></i></h1></header>
+    <div class="story">
+        <div id="rozxie">
+            <img class="bottom" src="Assets/images/pose-close-eyes.png"/>
+            <img class="top" src="Assets/images/pose.png"/>
+        </div>
+        <div class="story" id="start" style="display: none">
+            <div id="rozxie">
+                <img class="bottom" src="Assets/images/pose-close-eyes.png"/>
+                <img class="top" src="Assets/images/pose.png"/>
+            </div>
+            <div class="caption">
+                <p id="text">This is Rozxie. She LOVES going to the beach. She is an instagram influencer and her handle is @official_rozxie_lakynn. </p>                
+            </div>
+        </div>
+        <div class="story" id="litter" style="display: none">
+            <img id="image" src="Assets/images/litter.png"/>
+            <div class="caption">
+                <p id="text">The bad thing is, Rozxie is a litter bug...</p>                
+            </div>
+        </div>
+        <div class="story" id="coral" style="display: none">
+            <div id="rozxie">
+                <img class="bottom" src="Assets/images/selfie-text.png"/>
+                <img class="top" src="Assets/images/selfie.png"/>
+            </div>
+            <div class="caption">
+                <p id="text">And a massive narcissist...</p>                
+            </div>
+        </div>
+        <div class="story" id="marine" style="display: none">
+            <div id="animate">
+                <img class="bottom" src="Assets/images/turtle-hurt.png" style="position:absolute"/>
+                <img class="top" src="Assets/images/turtle-cry.png" style="position:absolute"/>
+            </div>
+            <div class="caption">
+                <p id="text">As a result of her actions, she has hurt many animals. :(</p>                
+            </div>
+        </div>
+        <div class="story" id="kelpie" style="display: none">
+            <div id="animate">
+                <img class="bottom" src="Assets/images/kelpie.png" style="position:absolute"/>
+                <img class="top" src="Assets/images/angrykelpie.png" style="position:absolute"/>
+            </div>
+            <div class="caption">
+                <p id="text">One day, the guardian Kelpie decided enough was enough...</p>                
+            </div>
+        </div>
+        <div class="story" id="curse" style="display: none">
+            <div id="rozxie">
+                <img class="bottom" src="Assets/images/cursed-green.png" style="position:absolute"/>
+                <img class="top" src="Assets/images/cursed.png" style="position:absolute"/>
+            </div>
+            <div class="caption">
+                <p id="text">And cursed Rozxie!!</p>                
+            </div>
+        </div>
+        <div class="story" id="breakcurse" style="display: none">                
+            <img id="image" src="Assets/images/break-curse.png" style="position:absolute"/>
+            <div class="caption">
+                <p id="text">"To break the curse, you need to help sea creatures," said the guardian Kelpie.</p>                
+            </div>
+        </div>                  
+    </div>
+    <button id="next">Next</button>
+    <button id="oilSpill" onclick="location.href = 'oilSpill/oilSpill.html'" style="display: none">Continue</button>
+</body>
+</html>
