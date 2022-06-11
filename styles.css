@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-direction: column;
     align-content: center;
-    font-family: Fredoka One;
+    font-family: 'Original Surfer', cursive;
     margin: 0;
     padding: 0;
     background-image: url("Assets/images/beach-bg.png");
@@ -85,7 +85,7 @@ button {
     border-radius: 20px;
     width: 200px;
     height: 50px;
-    font-family: Fredoka One;
+    font-family: 'Original Surfer', cursive;
     color: white;
     font-size: 20px;
     cursor: pointer;
