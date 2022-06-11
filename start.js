@@ -2,7 +2,7 @@ window.onload = function() {
     const nextButton = document.getElementById("next");
     const blinkingRozxie = document.getElementById("rozxie");
     const oilSpillNav = document.getElementById("oilSpill");
-    const screens = ['start', 'litter', 'coral']
+    const screens = ['start', 'litter', 'coral', 'marine']
     
     let i = 0;
 

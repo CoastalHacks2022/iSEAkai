@@ -110,3 +110,11 @@ button:hover {
     border-radius: 20px;
     font-size: 20px;
 }
+
+#turtle {
+    padding: 10%;
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
