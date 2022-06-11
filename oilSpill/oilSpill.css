@@ -9,6 +9,8 @@ body {
     background: linear-gradient(to bottom, rgb(173, 214, 228), rgb(43, 43, 75));
     font-family: Fredoka One;
     font-size: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 #lightGreen {
@@ -104,6 +106,10 @@ body {
     top: 80px;
 }
 
+text {
+    font-size: 25px;
+}
+
 /* timer */
 svg {
     pointer-events: none;
@@ -170,4 +176,20 @@ button {
 
 button:hover {
     background-color: rgba(0, 0, 0, 0.65);
+}
+
+.hair {
+    width: 400px;
+    object-fit: cover;
+    max-height: fit-content;
+}
+
+.fade { 
+    animation: fadeOut 3s;
+    animation-iteration-count: 1;
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
 }

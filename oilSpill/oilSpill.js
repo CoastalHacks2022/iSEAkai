@@ -1,23 +1,29 @@
 window.onload = function () {
     const scoreText = document.getElementById("score");
     const startButton = document.getElementById("startBtn");
-    const bloop = document.getElementById("bloop");
-    const canvas = document.getElementById("gameContainer");
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-    const ctx = canvas.getContext("2d");
+    const bloop = document.getElementById("bloop");  
+    const gameContainer = document.getElementById("gameContainer");
     const gameTimerGauge = document.querySelector(".timer-gauge");
     const gameTimer = document.getElementById("gameTimer");
     const gameStats = document.getElementById("gameStats");
     const modal = document.getElementById("instructionsWrapper");
     const startInstructions = document.getElementById("startInstructions");
+    const endScreen = document.getElementById("endGame");
+    const kelpHair = document.getElementById("withkelp");
+    const nextButton = document.getElementById("next");
+
+    const canvas = document.getElementById("gameContainer");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext("2d");
 
     let score = 0;
     let player;
     let gameTimerInterval = null;
 
-    startButton.addEventListener("click", startGame)
-    
+    startButton.addEventListener("click", startGame);
+    nextButton.addEventListener("click", null); //add navigation to the next screen
+
     function startGame() {
         modal.style.display = "none";
         gameStats.style.display = "flex";
@@ -34,7 +40,7 @@ window.onload = function () {
             gameTimer.textContent = 15 - sec + "s";
             if (sec === 15) {
                 sec = 0;
-                endGame(false);
+                endGame();
                 gameTimer.textContent = 15 - sec + "s";
                 gameTimer.classList.remove("warning");
                 gameTimerGauge.classList.remove("ticking");
@@ -51,12 +57,29 @@ window.onload = function () {
     }
 
     function endGame() {
-        bgm.stop();
         clearInterval(gameTimerInterval);
         gameStats.style.display = "none";
+        gameContainer.style.display = "none";
         modal.style.display = "block";
         modal.removeChild(startButton);
+        startInstructions.style.display = "none";
+        endScreen.style.display = "block";
     }
+
+    kelpHair.addEventListener("click", () => {
+        kelpHair.className += " fade";
+        Promise.all(
+            kelpHair.getAnimations().map(
+              function(animation) {
+                return animation.finished
+              }
+            )
+          ).then(
+            function() {
+              return kelpHair.remove();
+            }
+          );
+    });
     
     const mouse = {
         x: canvas.width / 2,
