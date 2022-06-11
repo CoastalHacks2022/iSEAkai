@@ -79,6 +79,13 @@ body {
     border-radius: 20px;
     border: 4px solid white;
     margin: 2% 25%;
+    flex-wrap: wrap;
+}
+
+#image {
+    max-width: 50vw;
+    max-height: 50vh;
+    object-fit: fill;
 }
 
 #gameStats {
@@ -192,4 +199,11 @@ button:hover {
 @keyframes fadeOut {
     0% {opacity: 1;}
     100% {opacity: 0;}
+}
+
+@media screen and (max-height: 600px) {
+    body, p, text {
+        font-size: 15px;
+        display: flex;
+    }
 }
