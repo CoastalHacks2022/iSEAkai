@@ -42,7 +42,7 @@ window.onload = function () {
       // showAngleIndicator: true,
       // showCollisions: true,
       // showVelocity: true,
-      wireframes: true,
+      wireframes: false,
     },
     // options: {
     //     width: window.innerWidth - 20,

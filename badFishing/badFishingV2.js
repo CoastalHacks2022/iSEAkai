@@ -21,6 +21,7 @@ var Engine = Matter.Engine,
 window.onload = function () {
   // create an engine
   var engine = Engine.create();
+  engine.world.gravity.y = 0;
 
   // get the canvas items from the document
   // fishCanvas = document.getElementById("fishCanvas");
@@ -39,10 +40,10 @@ window.onload = function () {
     options: {
       width: 800,
       height: 600,
-      // showAngleIndicator: true,
-      // showCollisions: true,
-      // showVelocity: true,
-      wireframes: false,
+      showAngleIndicator: true,
+      showCollisions: true,
+      showVelocity: true,
+      wireframes: true,
     },
     // options: {
     //     width: window.innerWidth - 20,
@@ -74,6 +75,8 @@ window.onload = function () {
   // keep the mouse in sync with rendering
   render.mouse = mouse;
 
+
+  // BORDERS
   // define a static ground (the *2 for width is cause canvas width is half the actual thing apparently)
   var ground = Bodies.rectangle(
     render.canvas.width / 2,
@@ -138,11 +141,13 @@ window.onload = function () {
     }
   );
 
+  // TENTACLES
+
   group = Body.nextGroup(true);
 
   var numSegments = 14;
 
-  var ropeC = Composites.stack(
+  var tentacleComposite = Composites.stack(
     100,
     50,
     numSegments,
@@ -183,56 +188,78 @@ window.onload = function () {
     chamfer: 5,
   });
 
-  Composite.add(ropeC, tentacleTip);
+  Composite.add(tentacleComposite, tentacleTip);
 
-  staticBody = Bodies.circle(100 + 50 * numSegments + 300, 0, 3, {
-    // isSensor: true,
-    isStatic: true,
-    collisionFilter: {
-      category: defaultCategory,
-      // group: group,
-    },  
+  var tentacleEnd = Bodies.circle(
+    100 + 50 * numSegments + 100 + 50,
+    50,
+    10,
+    {
+        collisionFilter: {
+            category: tentacleCategory,
+            group: group,
+        },
+        render: {
+            strokeStyle: "#ffffff",
+            // visible: false,
+        }
+    }
+  )
 
-    // collisionFilter: {
-    //   group: group,
-    // },
-    render: {
-      fillStyle: "#fabcfe",
-      visible: true,
-    },
-  });
-
-  var constraintTip = Constraint.create({
-    bodyA: ropeC.bodies[ropeC.bodies.length - 1],
-    pointA: { x: 0, y: 0 },
-    bodyB: staticBody,
-    pointB: { x: 0, y: 0 },
-    options: {
-      length: 0,
-      damping: 0.1,
-      stiffness: 0.9,
-      render: {
-        visible: true,
-      },
-    },
-    angularStiffness: 0,
-    angularDamping: 0,
-  });
+  Composite.add(tentacleComposite, tentacleEnd);
 
 
+  ///////// JUNK CODE /////////
 
-  // Composite.add(ropeC, staticBody);
+//   staticBody = Bodies.circle(100 + 50 * numSegments + 300, 0, 30, {
+//     isSensor: true,
+//     isStatic: true,
+//     collisionFilter: {
+//         category: tentacleCategory,
+//         group: group,
+//       },
 
-  Composites.chain(ropeC, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
+//     // collisionFilter: {
+//     //   group: group,
+//     // },
+//     render: {
+//       fillStyle: "#fabcfe",
+//       visible: true,
+//     },
+//   });
+
+//   var constraintTip = Constraint.create({
+//     bodyA: tentacleComposite.bodies[tentacleComposite.bodies.length - 1],
+//     pointA: { x: 0, y: 0 },
+//     bodyB: staticBody,
+//     pointB: { x: 0, y: 0 },
+//     options: {
+//       length: 0,
+//       damping: 0.1,
+//       stiffness: 0.9,
+//       render: {
+//         visible: true,
+//       },
+//     },
+//     angularStiffness: 0,
+//     angularDamping: 0,
+//   });
+
+// Composite.add(tentacleComposite, staticBody);
+
+  ///////// JUNK CODE /////////
+
+
+  Composites.chain(tentacleComposite, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
 
   Composite.add(
-    ropeC,
+    tentacleComposite,
     Constraint.create({
-      bodyB: ropeC.bodies[0],
+      bodyB: tentacleComposite.bodies[0],
       pointB: { x: -20, y: 0 },
       pointA: {
-        x: ropeC.bodies[0].position.x,
-        y: ropeC.bodies[0].position.y,
+        x: tentacleComposite.bodies[0].position.x,
+        y: tentacleComposite.bodies[0].position.y,
       },
       stiffness: 0.5,
     //   angularStiffness: 1,
@@ -240,7 +267,9 @@ window.onload = function () {
     })
   );
 
-  Composite.add(ropeC, constraintTip);
+
+
+//   Composite.add(tentacleComposite, constraintTip);
   
 
   Events.on(engine, "collisionStart", function (event) {
@@ -326,24 +355,16 @@ window.onload = function () {
       return;
     }
 
-    Body.setVelocity(staticBody, {
-      // x: staticBody.position.x - mouse.position.x,
-      // y: staticBody.position.y - mouse.position.y,
-      x: 0,
-      y: 0,
-    });
+    // Body.applyForce(tentacleEnd, tentacleEnd.position, {
+    //     x: (mouse.position.x - tentacleEnd.position.x) * 0.1,
+    //     y: (mouse.position.y - tentacleEnd.position.y) * 0.1,
+    // });
 
-    //   Body.setAngle(tentacleTip, {
-    //     // x: staticBody.position.x - mouse.position.x,
-    //     // y: staticBody.position.y - mouse.position.y
-    //     x: 0,
-    //     y: 0
-    // })
-
-    Body.setPosition(staticBody, {
-      x: mouse.position.x,
-      y: mouse.position.y,
+    Body.setVelocity(tentacleEnd, {
+        x: (mouse.position.x - tentacleEnd.position.x) * 0.1,
+        y: (mouse.position.y - tentacleEnd.position.y) * 0.1,
     });
+    
   });
 
   // add all of the bodies to the world
@@ -352,10 +373,10 @@ window.onload = function () {
     ceiling,
     leftWall,
     rightWall,
-    ropeC,
+    tentacleComposite,
     // circle,
     // constraintTip,
-    staticBody,
+    // staticBody,
   ]);
 
   // fit the render viewport to the scene
