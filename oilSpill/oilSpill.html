@@ -5,11 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>iSEAkai</title>
-        <script type="js" src="oilSpill.js"></script>
         <link rel="stylesheet" href="oilSpill.css" />
     </head>
     <body>
+        <script src="oilSpill.js"></script>
         <div>
+            <audio id="bgm" src="../Assets/sounds/underwater.mp3" preload="auto" autoplay="true"></audio>
+            <audio id="bloop" src="../Assets/sounds/bloop.mp3" preload="auto"></audio>
+            <p id="score">Score: 0</p>
             <canvas id="gameContainer" ></canvas>
             <div class="seaweed" id="lightGreen" style="margin-right: -55px; z-index: -1;"></div>
             <div class="seaweed" id="darkGreen" style="margin-left: -35px;"></div>
