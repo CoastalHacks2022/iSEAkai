@@ -7,7 +7,7 @@ const score = document.querySelector('#score');
 
 let result = 0;
 let hitPosition;
-let currentTime = 30;
+let currentTime = 15;
 let timerId = null;
 
 let countDownTimerId = setInterval(countDown, 1000)
