@@ -64,6 +64,8 @@ window.onload = function () {
         modal.removeChild(startButton);
         startInstructions.style.display = "none";
         endScreen.style.display = "block";
+        document.removeChild(bloop);
+        document.removeChild(gameContainer)
     }
 
     kelpHair.addEventListener("click", () => {
