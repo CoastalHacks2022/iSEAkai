@@ -1,10 +1,17 @@
 // CONSTANTS
 const SHIPOFFSET = 100;
+const SHIPSPEED = 2;
+const BARRIERSPACE = 100;
 
 // VARIABLES
 var gameStats = {
   playerHealth: 100,
   enemyHealth: 100,
+};
+
+var boatMovement = {
+  left: false,
+  speed: SHIPSPEED,
 };
 
 // MATTER JS
@@ -55,7 +62,8 @@ window.onload = function () {
     shipBodyCategory = 0x0002,
     rozxieBodyCategory = 0x0004,
     playerCategory = 0x0008,
-    waveCategory = 0x0010;
+    waveCategory = 0x0010,
+    projectileCategory = 0x0020;
 
   //////////////// MOUSE ////////////////
 
@@ -165,15 +173,13 @@ window.onload = function () {
 
   /////////////// SHIP ///////////////
 
-
-
   var group = Body.nextGroup(true);
-  var ship = Composite.create({ label: 'ship' });
+  var ship = Composite.create({ label: "ship" });
 
   var shipRigBeam = Bodies.rectangle(
     render.canvas.width / 2 - 50,
     render.canvas.height / 2 - 150 - SHIPOFFSET,
-    700,
+    800,
     20,
     {
       collisionFilter: {
@@ -186,12 +192,34 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
+        // visible: false,
+      },
+    }
+  );
+
+  var shipRigBeamTop = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    render.canvas.height / 2 - 200 - SHIPOFFSET,
+    800,
+    20,
+    {
+      collisionFilter: {
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
+      },
+      isStatic: true,
+      friction: 0.8,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        // visible: false,
       },
     }
   );
 
   var shipRigBeamLeft = Bodies.rectangle(
-    render.canvas.width / 2 - 50 - 700/2,
+    render.canvas.width / 2 - 50 - 800 / 2,
     render.canvas.height / 2 - 200 - SHIPOFFSET,
     10,
     80,
@@ -205,12 +233,13 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
+        // visible: false,
       },
     }
   );
 
   var shipRigBeamRight = Bodies.rectangle(
-    render.canvas.width / 2 - 50 + 700/2,
+    render.canvas.width / 2 - 50 + 800 / 2,
     render.canvas.height / 2 - 200 - SHIPOFFSET,
     10,
     80,
@@ -224,6 +253,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
+        // visible: false,
       },
     }
   );
@@ -243,6 +273,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
+        // visible: false,
       },
     }
   );
@@ -257,13 +288,12 @@ window.onload = function () {
         category: shipBodyCategory | playerCategory,
         mask: shipBodyCategory | playerCategory,
       },
-      // isStatic: true,
       render: {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/ship.png",
+          texture: "../assets/images/sonicScream/shipRight.png",
           xScale: 0.5,
           yScale: 0.5,
           yOffset: 0.15,
@@ -272,13 +302,12 @@ window.onload = function () {
     }
   );
 
-
   var shipLeftConstraint = Constraint.create({
-      bodyA: shipCastor,
-      pointA: { x: -70, y: 0 },
-      bodyB: shipBody,
-      pointB: { x: -40, y: 0 },
-      stiffness: 0.005
+    bodyA: shipCastor,
+    pointA: { x: -70, y: 0 },
+    bodyB: shipBody,
+    pointB: { x: -40, y: 0 },
+    stiffness: 0.005,
   });
 
   var shipRightConstraint = Constraint.create({
@@ -286,11 +315,12 @@ window.onload = function () {
     pointA: { x: 70, y: 0 },
     bodyB: shipBody,
     pointB: { x: 40, y: 0 },
-    stiffness: 0.005
-});
+    stiffness: 0.005,
+  });
 
   Composite.addBody(ship, shipBody);
   Composite.addBody(ship, shipRigBeam);
+  Composite.addBody(ship, shipRigBeamTop);
   Composite.addBody(ship, shipCastor);
   Composite.addBody(ship, shipRigBeamLeft);
   Composite.addBody(ship, shipRigBeamRight);
@@ -298,14 +328,13 @@ window.onload = function () {
   Composite.addConstraint(ship, shipLeftConstraint);
   Composite.addConstraint(ship, shipRightConstraint);
 
-
   /////////////// WAVES ///////////////
 
   var group = Body.nextGroup(true);
 
   var waves = Bodies.rectangle(
     render.canvas.width / 2 - 50,
-    render.canvas.height / 2 ,
+    render.canvas.height / 2,
     10,
     10,
     {
@@ -333,7 +362,7 @@ window.onload = function () {
     render.canvas.width / 2 + 150,
     render.canvas.height / 2,
     50,
-    50,
+    20,
     {
       collisionFilter: {
         category: rozxieBodyCategory | defaultCategory | playerCategory,
@@ -357,6 +386,154 @@ window.onload = function () {
 
   /////////////// SHIP PROJECTILES ///////////////
 
+  var group = Body.nextGroup(true);
+  var shipProjectiles = Composite.create({ label: "shipProjectiles" });
+
+  function createShipProjectile(x, y, angle) {
+    var shipProjectile = Bodies.cicle(x, y, 30, {
+      collisionFilter: {
+        category: rozxieBodyCategory | projectileCategory,
+        mask: rozxieBodyCategory | projectileCategory,
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        sprite: {
+          texture: "../assets/images/sonicScream/bubble.png",
+          xScale: 0.5,
+          yScale: 0.5,
+        },
+      },
+    });
+
+    Composite.add(engine.world, shipProjectile);
+  }
+
+  /////////////// ROZXIE PROJECTILES ///////////////
+
+  var group = Body.nextGroup(true);
+  var rozxieProjectiles = Composite.create({ label: "rozxieProjectiles" });
+
+  function createRozxieProjectile(x, y, angle) {
+    var rozxieProjectile = Bodies.cicle(x, y, 30, {
+      collisionFilter: {
+        category: shipBodyCategory | projectileCategory,
+        mask: shipBodyCategory | projectileCategory,
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        sprite: {
+          texture: "../assets/images/sonicScream/sonicScream1.png",
+          xScale: 0.5,
+          yScale: 0.5,
+        },
+      },
+    });
+
+    force;
+
+    Composite.add(engine.world, rozxieProjectile);
+  }
+
+  /////////////// PROJECTILE DESPAWN BARRIER ///////////////
+  var group = Body.nextGroup(true);
+  var despawnBarrier = Composite.create({ label: "despawnBarrier" });
+
+  // define a static ground (the *2 for width is cause canvas width is half the actual thing apparently)
+  var lowerBarrier = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    render.canvas.height + BARRIERSPACE,
+    render.canvas.width + BARRIERSPACE * 2,
+    50,
+    {
+      collisionFilter: {
+        category: projectileCategory,
+        mask: projectileCategory,
+      },
+      isStatic: true,
+      isSensor: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        visible: false,
+      },
+    }
+  );
+
+  var upperBarrier = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    0 - BARRIERSPACE,
+    render.canvas.width + BARRIERSPACE * 2,
+    50,
+    {
+      collisionFilter: {
+        category: projectileCategory,
+        mask: projectileCategory,
+      },
+      isStatic: true,
+      isSensor: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        visible: false,
+      },
+    }
+  );
+
+  var leftBarrier = Bodies.rectangle(
+    -50 - BARRIERSPACE,
+    render.canvas.height / 2,
+    50,
+    render.canvas.height + BARRIERSPACE * 2,
+    {
+      collisionFilter: {
+        category: projectileCategory,
+        mask: projectileCategory,
+      },
+      isStatic: true,
+      isSensor: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        visible: false,
+      },
+    }
+  );
+
+  var rightBarrier = Bodies.rectangle(
+    render.canvas.width - 50 + BARRIERSPACE,
+    render.canvas.height / 2,
+    50,
+    render.canvas.height + BARRIERSPACE * 2,
+    {
+      collisionFilter: {
+        category: projectileCategory,
+        mask: projectileCategory,
+      },
+      isStatic: true,
+      isSensor: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+        visible: false,
+      },
+    }
+  );
+
+  Composite.addBody(despawnBarrier, lowerBarrier);
+  Composite.addBody(despawnBarrier, upperBarrier);
+  Composite.addBody(despawnBarrier, leftBarrier);
+  Composite.addBody(despawnBarrier, rightBarrier);
+
   /////////////// EVENTS ///////////////
 
   Events.on(engine, "collisionStart", function (event) {
@@ -364,26 +541,17 @@ window.onload = function () {
 
     // https://stackoverflow.com/questions/47207541/matter-js-how-to-remove-bodies-after-collision
 
-    // for (var i = 0, j = pairs.length; i != j; ++i) {
-    //   var pair = pairs[i];
-    //   if (pair.bodyA === rightTrigger || pair.bodyB === rightTrigger) {
-    //     if (pair.bodyA === dolphin || pair.bodyB === dolphin) {
-    //       animalFree.dolphin = true;
-    //     } else if (pair.bodyA === turtle || pair.bodyB === turtle) {
-    //       animalFree.turtle = true;
-    //     } else if (pair.bodyA === stingray || pair.bodyB === stingray) {
-    //       animalFree.stingray = true;
-    //     } else if (pair.bodyA === shark || pair.bodyB === shark) {
-    //       animalFree.shark = true;
-    //     } else if (pair.bodyA === whaleshark || pair.bodyB === whaleshark) {
-    //       animalFree.whaleshark = true;
-    //     }
-    //   }
-    // }
+    for (var i = 0, j = pairs.length; i != j; ++i) {
+      var pair = pairs[i];
 
-    // if (checkAllFree()) {
-    //   alert("You win!");
-    // }
+      // if the projectile is in the despawn barrier, remove it
+      if (pair.bodyA.parent === despawnBarrier) {
+        World.remove(engine.world, pair.bodyA);
+      }
+      if (pair.bodyB.parent === despawnBarrier) {
+        World.remove(engine.world, pair.bodyB);
+      }
+    }
   });
 
   // Events.on(engine, "collisionEnd", function (event) {
@@ -392,20 +560,62 @@ window.onload = function () {
 
   // Events.on(mouseConstraint, "mousedown", function (event) {});
 
-  Events.on(engine, "afterUpdate", function () {
-    Body.setAngularVelocity(rozxie, rozxie.angle * -0.02);
+  gravity = engine.world.gravity;
 
+  Events.on(engine, "afterUpdate", function () {
+    // Make Roxie face upright
+    Body.setAngularVelocity(rozxie, rozxie.angle * -0.0001);
+
+    // Make Roxie have lower gravity
     Body.setVelocity(rozxie, {
       x: rozxie.velocity.x,
       y: rozxie.velocity.y - 0.25 * gravity.y,
     });
+
+
+    // move the boat
+    if (boatMovement.left) {
+      if (shipCastor.position.x < 50) {
+        console.log("lefting1")
+        boatMovement.left = false;
+        Body.setVelocity(shipCastor, {
+          x: shipCastor.velocity.x - 0.5,
+          y: shipCastor.velocity.y,
+        });
+        shipBody.render.sprite.texture="../assets/images/sonicScream/shipRight.png";
+      } else {
+        console.log("lefting2")
+        Body.setVelocity(shipCastor, {
+          x: -SHIPSPEED,
+          y: shipCastor.velocity.y,
+        });
+      }
+    } else {
+      if (shipCastor.position.x > render.canvas.width - 150) {
+        console.log("right1")
+        boatMovement.left = true;
+        Body.setVelocity(shipCastor, {
+          x: shipCastor.velocity.x + 0.5,
+          y: shipCastor.velocity.y,
+        });
+        shipBody.render.sprite.texture="../assets/images/sonicScream/shipLeft.png";
+      } else {
+        console.log("right2")
+        Body.setVelocity(shipCastor, {
+          x: SHIPSPEED,
+          y: shipCastor.velocity.y,
+        });
+      }
+    }
+
+    // Give the projectiles zero gravity
 
     if (!mouse.position.x) {
       return;
     }
   });
 
-  gravity = engine.world.gravity;
+  //////////////////// CONTROLS ////////////////////
 
   var maxSpeed = {
     x: 10,
@@ -474,6 +684,7 @@ window.onload = function () {
     waves,
     rozxie,
     ship,
+    despawnBarrier,
   ]);
 
   // fit the render viewport to the scene
