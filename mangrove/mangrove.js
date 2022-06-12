@@ -6,9 +6,8 @@ var playerSTATE = "IDLE"; //
 var spriteSheetKahoona="https://farm1.staticflickr.com/772/20801037743_6c4ea2f91b_k.jpg";
 var spriteSheetNinja = "https://farm1.staticflickr.com/694/22704795114_e7bb9d1146_k.jpg";
 
-//Holds the display text
+// Holds the display text
 var displayTextArray = [];
-
 
 function init() {
   stage = new createjs.Stage(document.getElementById("testCanvas"));
@@ -16,7 +15,7 @@ function init() {
   h = stage.canvas.height;
  
 
-  //load assets
+  // load assets
   loader = new createjs.LoadQueue(false);
   loader.on("complete", handleComplete, this);
   loader.crossOrigin = "";

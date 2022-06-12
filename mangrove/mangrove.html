@@ -5,16 +5,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EaselJS Spritesheet Example</title>
+    <title>Mangrove Game</title>
     <link rel="stylesheet" href="mangrove.css" />
   </head>
   
   <body onload="init();" tabindex="0">
     <script src="mangrove.js"></script>
     
-    <!--For Easel.js-->
+    <!--For mangrove.js-->
     <div id='title' class='flexRow'>
-        <h1 class="insetShadow">Canvas Fighters<h1>
+        <h1 class="insetShadow">Mangrove Game<h1>
     </div>
     
     <!--Content area-->
@@ -34,16 +34,13 @@
         <p id="enemy1_stats"></p>  
       </div>
     </div>
-        <!--Instructions-->
+        
+    <!--Instructions-->
      <div class="center getFocus">
        <div class="btn" onclick="document.body.style.background = '#222'; getElementById('getFocus').style.display = 'none'; getElementById('title').style.display = 'none';"><h2 id="getFocus">Start</h2></div>
        <p>W A S D or Arrow Keys to move || <b>Spacebar</b> to attack</p>
-      
-       
     </div>
 
   </body>
-    
-  
   
 </html>

@@ -9,14 +9,17 @@ body{
   font-family: "Roboto";
   color: #ccc;
 }
+
 h1{ 
   font-family: "Shadows Into Light", san-serif;
   color: white;
   font-size: 4em;
   text-rendering: optimizeLegibility;
 }
+
 h2{
 }
+
 .btn {
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
@@ -34,28 +37,33 @@ h2{
   background: #3cb0fd;
   text-decoration: none;
 }
+
 .center{
   max-width: 640px;
   margin: 0 auto;
-  
 }
+
 .flexRow{
   display: -webkit-flex;
   display: flex;
   justify-content:center;
    -webkit-justify-content: center;
 }
+
 .getFocus{
   height: 100px;
   font-size: 18px;
   padding-top: 1em;
 }
+
 .statsLeft{
   padding-right: 5em;
 }
+
 .statsRight{
   padding-left: 5em;
 }
+
 #testCanvas{
   background-color: white;
 }
