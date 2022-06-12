@@ -48,7 +48,7 @@ squares.forEach(square => {
       result++;
       score.textContent = result;
       hitPosition = null;
-      smashedLoggers = new playSound("sounds/correct.mp3");
+      smashedLoggers = new playSound("sounds/smash.mp3");
       smashedLoggers.play();
     }
   })

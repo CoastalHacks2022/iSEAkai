@@ -4,6 +4,7 @@
     height: 809px;
     flex-wrap: wrap;
     border: solid black 1px;
+    cursor: url(images/crabClaw.png), default;
 }
 
 .square {
@@ -17,8 +18,4 @@
     background-image: url("images/logger.jpg");
     max-width: 200px;
     max-height: 200px;
-}
-
-.module {
-    cursor: url("images/claw.jfif"), auto;
 }
