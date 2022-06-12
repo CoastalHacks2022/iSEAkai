@@ -68,6 +68,7 @@ function countDown() {
     clearInterval(countDownTimerId);
     clearInterval(timerId);
     alert('Your score is ' + result + '. Congratulations one of Rozxie\'s hand has been transformed back!');
+    next()
   }
 }
 
