@@ -8,7 +8,6 @@ window.onload = function() {
     let i = 0;
 
     nextButton.addEventListener("click", () => {
-        console.log(i)
         if (i !== 0) document.getElementById(screens[i-1]).style.display = "none";
         if (i == 1) blinkingRozxie.style.display = "none";
         document.getElementById(screens[i]).style.display = "flex";
