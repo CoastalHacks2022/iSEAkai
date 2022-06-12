@@ -1,4 +1,5 @@
 // CONSTANTS
+const SHIPOFFSET = 100;
 
 // VARIABLES
 var gameStats = {
@@ -44,7 +45,7 @@ window.onload = function () {
       showAngleIndicator: true,
       showCollisions: true,
       showVelocity: true,
-      // wireframes: false,
+      wireframes: false,
       background: "#2475bd",
     },
   });
@@ -94,7 +95,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -115,7 +116,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -136,7 +137,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -157,18 +158,43 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
 
   /////////////// SHIP ///////////////
 
-  var ship = Bodies.rectangle(
-    render.canvas.width / 2,
-    render.canvas.height / 2,
+
+
+  var group = Body.nextGroup(true);
+  var ship = Composite.create({ label: 'ship' });
+
+  var shipRigBeam = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    render.canvas.height / 2 - 150 - SHIPOFFSET,
+    700,
     20,
-    20,
+    {
+      collisionFilter: {
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
+      },
+      isStatic: true,
+      friction: 0.8,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+      },
+    }
+  );
+
+  var shipRigBeamLeft = Bodies.rectangle(
+    render.canvas.width / 2 - 50 - 700/2,
+    render.canvas.height / 2 - 200 - SHIPOFFSET,
+    10,
+    80,
     {
       collisionFilter: {
         category: shipBodyCategory,
@@ -179,20 +205,107 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
+      },
+    }
+  );
+
+  var shipRigBeamRight = Bodies.rectangle(
+    render.canvas.width / 2 - 50 + 700/2,
+    render.canvas.height / 2 - 200 - SHIPOFFSET,
+    10,
+    80,
+    {
+      collisionFilter: {
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+      },
+    }
+  );
+
+  var shipCastor = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    render.canvas.height / 2 - 170 - SHIPOFFSET,
+    100,
+    20,
+    {
+      collisionFilter: {
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
+      },
+      // isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
+      },
+    }
+  );
+
+  var shipBody = Bodies.rectangle(
+    render.canvas.width / 2 - 50,
+    render.canvas.height / 2 - 50 - SHIPOFFSET,
+    100,
+    20,
+    {
+      collisionFilter: {
+        category: shipBodyCategory | playerCategory,
+        mask: shipBodyCategory | playerCategory,
+      },
+      // isStatic: true,
+      render: {
+        fillStyle: "#36c247",
+        strokeStyle: "green",
+        lineWidth: 0,
         sprite: {
-          texture: "../assets/images/netTexture.png",
-          xScale: 1.6,
-          yScale: 2,
+          texture: "../assets/images/sonicScream/ship.png",
+          xScale: 0.5,
+          yScale: 0.5,
+          yOffset: 0.15,
         },
       },
     }
   );
 
+
+  var shipLeftConstraint = Constraint.create({
+      bodyA: shipCastor,
+      pointA: { x: -70, y: 0 },
+      bodyB: shipBody,
+      pointB: { x: -40, y: 0 },
+      stiffness: 0.005
+  });
+
+  var shipRightConstraint = Constraint.create({
+    bodyA: shipCastor,
+    pointA: { x: 70, y: 0 },
+    bodyB: shipBody,
+    pointB: { x: 40, y: 0 },
+    stiffness: 0.005
+});
+
+  Composite.addBody(ship, shipBody);
+  Composite.addBody(ship, shipRigBeam);
+  Composite.addBody(ship, shipCastor);
+  Composite.addBody(ship, shipRigBeamLeft);
+  Composite.addBody(ship, shipRigBeamRight);
+
+  Composite.addConstraint(ship, shipLeftConstraint);
+  Composite.addConstraint(ship, shipRightConstraint);
+
+
   /////////////// WAVES ///////////////
+
+  var group = Body.nextGroup(true);
 
   var waves = Bodies.rectangle(
     render.canvas.width / 2 - 50,
-    render.canvas.height / 2 - 150,
+    render.canvas.height / 2 ,
     10,
     10,
     {
@@ -206,9 +319,9 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/waves.png",
-          xScale: 1.5,
-          yScale: 1.5,
+          texture: "../assets/images/sonicScream/topwave.png",
+          xScale: 1.6,
+          yScale: 1.2,
         },
       },
     }
@@ -360,6 +473,7 @@ window.onload = function () {
     rightWall,
     waves,
     rozxie,
+    ship,
   ]);
 
   // fit the render viewport to the scene
