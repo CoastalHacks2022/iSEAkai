@@ -1,14 +1,18 @@
 // CONSTANTS
-const SHIPOFFSET = 150;
+const SHIPOFFSET = 120;
 const SHIPSPEED = 2;
 const BARRIERSPACE = 100;
 const SHIPPROJECTILECOUNTDOWN = 100;
 const SHIPPROJECTILESPEED = 10;
+const SONICSCREAMCOOLDOWN = 40;
 
 const maxSpeed = {
   x: 5,
   y: 5,
 };
+
+const healthTxt = document.getElementById("health");
+const enemyHealthTxt = document.getElementById("enemyHealth");
 
 // VARIABLES
 var gameStats = {
@@ -22,6 +26,10 @@ var boatMovement = {
 };
 
 var shipProjectileTimer = 0;
+var sonicScreamTimer = SONICSCREAMCOOLDOWN;
+
+var audio = new Audio('../Assets/sounds/scream.mp3');
+
 
 // MATTER JS
 
@@ -120,7 +128,7 @@ window.onload = function () {
 
   var ceiling = Bodies.rectangle(
     render.canvas.width / 2 - 50,
-    0,
+    100,
     render.canvas.width,
     50,
     {
@@ -202,7 +210,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -223,7 +231,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -243,7 +251,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -263,7 +271,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -283,7 +291,7 @@ window.onload = function () {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
-        // visible: false,
+        visible: false,
       },
     }
   );
@@ -318,6 +326,10 @@ window.onload = function () {
     bodyB: shipBody,
     pointB: { x: -40, y: 0 },
     stiffness: 0.005,
+    render: {
+      visible: false,
+    },
+
   });
 
   var shipRightConstraint = Constraint.create({
@@ -326,6 +338,9 @@ window.onload = function () {
     bodyB: shipBody,
     pointB: { x: 40, y: 0 },
     stiffness: 0.005,
+    render: {
+      visible: false,
+    },
   });
 
   Composite.addBody(ship, shipBody);
@@ -358,7 +373,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/topwave.png",
+          texture: "../assets/images/sonicScream/bg2.png",
           xScale: 1.6,
           yScale: 1.2,
         },
@@ -487,6 +502,7 @@ window.onload = function () {
         category: rozxieBodyCategory | shipBodyCategory,
         mask: rozxieBodyCategory | shipBodyCategory,
       },
+      label: "barrierBlock",
       isStatic: true,
       isSensor: true,
       render: {
@@ -509,6 +525,7 @@ window.onload = function () {
         mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
+      label: "barrierBlock",
       isSensor: true,
       render: {
         fillStyle: "#36c247",
@@ -529,6 +546,7 @@ window.onload = function () {
         category: rozxieBodyCategory | shipBodyCategory,
         mask: rozxieBodyCategory | shipBodyCategory,
       },
+      label: "barrierBlock",
       isStatic: true,
       isSensor: true,
       render: {
@@ -551,7 +569,8 @@ window.onload = function () {
         mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
-      // isSensor: true,
+      label: "barrierBlock",
+      isSensor: true,
       render: {
         fillStyle: "#36c247",
         strokeStyle: "green",
@@ -573,32 +592,39 @@ window.onload = function () {
 
     _.pairs.forEach((pair) => {
       // if the projectile is in the despawn barrier, remove it
-      if (pair.bodyA.parent === despawnBarrier) {
+      if (pair.bodyA.label === "barrierBlock") {
         if (pair.bodyB.label === "rozxieProjectile") {
           World.remove(rozxieProjectiles, pair.bodyB);
         } else {
           World.remove(shipProjectiles, pair.bodyB);
         }
-        console.log("removed projectile");
       }
-      if (pair.bodyB.parent === despawnBarrier) {
+      if (pair.bodyB.label === "barrierBlock") {
         if (pair.bodyB.label === "rozxieProjectile") {
           World.remove(rozxieProjectiles, pair.bodyA);
         } else {
           World.remove(shipProjectiles, pair.bodyA);
         }
-        console.log("removed projectile");
       }
 
       if (pair.bodyA === shipBody) {
         console.log("ship hit");
-        console.log(pair.bodyB.label);
+        gameStats.enemyHealth -= 5;
+        enemyHealthTxt.innerHTML = gameStats.enemyHealth;
+        if (gameStats.enemyHealth <= 0) {
+          alert("You win!");
+        }
         World.remove(rozxieProjectiles, pair.bodyB);
       }
 
       if (pair.bodyA === rozxie) {
         console.log("rozxie hit");
-        console.log(pair.bodyB.label);
+        gameStats.playerHealth -= 5;
+        healthTxt.innerHTML  = gameStats.playerHealth;
+        if (gameStats.playerHealth <= 0) {
+          alert("You lose!");
+          
+        }
         World.remove(shipProjectiles, pair.bodyB);
       }
     });
@@ -680,29 +706,33 @@ window.onload = function () {
       createShipProjectile(
         shipBody.position.x,
         shipBody.position.y,
-        90 / 180 * Math.PI,
+        (90 / 180) * Math.PI,
         boatMovement.left
       );
       createShipProjectile(
         shipBody.position.x,
         shipBody.position.y,
-        45 / 180 * Math.PI,
+        (45 / 180) * Math.PI,
         boatMovement.left
       );
 
       createShipProjectile(
         shipBody.position.x,
         shipBody.position.y,
-        135 / 180 * Math.PI,
+        (135 / 180) * Math.PI,
         boatMovement.left
       );
 
       console.log("fired ship projectile");
     }
 
-    if (!mouse.position.x) {
-      return;
+
+    sonicScreamTimer += 1;
+
+    if (sonicScreamTimer > SHIPPROJECTILECOUNTDOWN) {
+      sonicScreamTimer = SHIPPROJECTILECOUNTDOWN + 1;
     }
+
   });
 
   //////////////////// CONTROLS ////////////////////
@@ -731,7 +761,12 @@ window.onload = function () {
 
     if (e.key === " ") {
       // shoot projectile
-      createRozxieProjectile(rozxie.position.x, rozxie.position.y);
+      if (sonicScreamTimer > SHIPPROJECTILECOUNTDOWN) {
+        sonicScreamTimer = 0;
+        audio.play();
+        createRozxieProjectile(rozxie.position.x, rozxie.position.y);
+
+      }
     }
 
     finalVelocity = {
