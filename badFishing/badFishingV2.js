@@ -414,8 +414,7 @@ window.onload = function () {
     }
 
     if (checkAllFree()) {
-      location.href = '../badFishing/badFishing.html'
-      // LOGGGING ONE LATER
+      location.href = '../hammerIntro/hammerIntro.html'
     }
   });
 
