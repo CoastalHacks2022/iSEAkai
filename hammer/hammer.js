@@ -70,3 +70,7 @@ function countDown() {
     alert('Your score is ' + result + '. Congratulations one of Rozxie\'s hand has been transformed back!');
   }
 }
+
+function next() {
+  window.location.href = "../transitionPages/antiTrawling.html";
+}
