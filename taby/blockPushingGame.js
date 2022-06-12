@@ -245,6 +245,7 @@ Promise.allSettled([
 
     if (hasWon(targets, boxes)) {
       document.querySelector("#message").innerHTML = "You've won!";
+      // ADD LINK HERE
     }
 
     render();
