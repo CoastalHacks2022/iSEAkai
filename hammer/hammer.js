@@ -67,6 +67,6 @@ function countDown() {
   if (currentTime == 0) {
     clearInterval(countDownTimerId);
     clearInterval(timerId);
-    alert('Game over! Your final score is ' + result);
+    alert('Your score is ' + result + 'Congradulations one hand of Rozxie has been transformed back!');
   }
 }
