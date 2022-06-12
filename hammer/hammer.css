@@ -1,3 +1,7 @@
+body {
+    font-family: 'Original Surfer', cursive;
+}
+
 .grid {
     display: flex;
     max-width: 1650px;
