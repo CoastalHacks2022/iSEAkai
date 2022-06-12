@@ -4,7 +4,7 @@ const SHIPSPEED = 2;
 const BARRIERSPACE = 100;
 const SHIPPROJECTILECOUNTDOWN = 100;
 const SHIPPROJECTILESPEED = 10;
-const SONICSCREAMCOOLDOWN = 40;
+const SONICSCREAMCOOLDOWN = 20;
 
 const maxSpeed = {
   x: 5,
@@ -609,20 +609,20 @@ window.onload = function () {
 
       if (pair.bodyA === shipBody) {
         console.log("ship hit");
-        gameStats.enemyHealth -= 5;
+        gameStats.enemyHealth -= 25;
         enemyHealthTxt.innerHTML = gameStats.enemyHealth;
         if (gameStats.enemyHealth <= 0) {
-          alert("You win!");
+          location.href = '../transitionPages/driftNet.html'
         }
         World.remove(rozxieProjectiles, pair.bodyB);
       }
 
       if (pair.bodyA === rozxie) {
         console.log("rozxie hit");
-        gameStats.playerHealth -= 5;
+        gameStats.playerHealth -= 10;
         healthTxt.innerHTML  = gameStats.playerHealth;
         if (gameStats.playerHealth <= 0) {
-          alert("You lose!");
+          alert("You lose! Try again!");
           
         }
         World.remove(shipProjectiles, pair.bodyB);
