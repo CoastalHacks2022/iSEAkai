@@ -414,7 +414,8 @@ window.onload = function () {
     }
 
     if (checkAllFree()) {
-      alert("You win!");
+      location.href = '../badFishing/badFishing.html'
+      // LOGGGING ONE LATER
     }
   });
 
