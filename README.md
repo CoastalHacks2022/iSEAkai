@@ -7,6 +7,7 @@ Coastal Environmental problem awareness game
 ## Tutorials/ Inspiration
 - [oil spill game](https://codepen.io/franksLaboratory/pen/yLJdOBM)
 - [css for animation](https://stackoverflow.com/questions/27332634/css-animation-switch-between-two-images)
+- [css buttons for transition screens](https://codepen.io/chrisbautista/pen/PoQKZyL)
 
 ## Credits
 
