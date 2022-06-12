@@ -1,0 +1,73 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    font-family: 'Original Surfer', cursive;
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    background-position: center;
+}
+
+#gameContainer {
+    display: block;
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgb(173, 214, 228), rgba(190, 196, 145, 0.5), rgb(120, 126, 85), rgb(200, 215, 230));
+}
+
+.droparea {
+    height: 50vh;
+    display: flex;
+    object-fit: contain;
+    flex-direction: column;
+    text-align: center;
+}
+
+#binImg {
+    height: 80%;
+    object-fit: contain;
+}
+
+.gameObjects {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.draggable {
+    z-index: 1;
+}
+
+.draggable:hover {
+    cursor: move;
+}
+
+#net {
+    width: 100vw;
+    min-height: 30vh;
+    position: absolute; 
+}
+
+#happy-end { 
+    background-image: url("../Assets/images/beach-bg.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.animals {
+    object-fit: contain;
+    height: 40vh;
+    margin-bottom: 2vh;
+}
