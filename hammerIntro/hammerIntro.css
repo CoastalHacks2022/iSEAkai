@@ -1,0 +1,19 @@
+body {
+    height: 100vh;
+    background-image: url('../Assets/images/logging.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    object-fit: fill;
+    flex-direction: column;
+}
+
+button {
+    cursor: pointer;
+}
