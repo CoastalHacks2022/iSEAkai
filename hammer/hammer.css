@@ -1,0 +1,21 @@
+.grid {
+    display: flex;
+    width: 1620px;
+    height: 809px;
+    flex-wrap: wrap;
+    border: solid black 1px;
+    cursor: url(images/crabClaw.png), default;
+}
+
+.square {
+    width: 200px;
+    height: 200px;
+    border: solid white 1px;
+    background-color: white;
+}
+
+.mole {
+    background-image: url("images/logger.jpg");
+    max-width: 200px;
+    max-height: 200px;
+}
