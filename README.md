@@ -7,6 +7,7 @@ Coastal Environmental problem awareness game
 ## Tutorials/ Inspiration
 - [oil spill game](https://codepen.io/franksLaboratory/pen/yLJdOBM)
 - [css for animation](https://stackoverflow.com/questions/27332634/css-animation-switch-between-two-images)
+- [css buttons for transition screens](https://codepen.io/chrisbautista/pen/PoQKZyL)
 
 ## Credits
 
@@ -21,5 +22,7 @@ Coastal Environmental problem awareness game
     - https://pixabay.com/vectors/coral-animal-wildlife-cnidaria-6488326/
     - https://pixabay.com/vectors/lobster-crab-sea-life-seafood-food-576487/
 - [kelpie](https://www.google.com/search?q=kelpie+png+creature&tbm=isch&ved=2ahUKEwizgLC-16X4AhXKjNgFHXP_DNwQ2-cCegQIABAA&oq=kelpie+png+creature&gs_lcp=CgNpbWcQAzoECCMQJzoGCAAQHhAIOgQIABAeUIUFWPUlYKsnaAFwAHgAgAFciAHxBJIBAjEzmAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=m7CkYvPGC8qZ4t4P8_6z4A0&bih=927&biw=1298&rlz=1C1ONGR_enSG980SG980#imgrc=ApEQ0bouRjbvWM)
-- Rozxie
+- Rozxie, seal
     - figma
+- litter on the beach
+    - https://www.ecowatch.com/wp-content/uploads/2021/10/1524435686-origin.jpg
