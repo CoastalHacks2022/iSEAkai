@@ -198,7 +198,7 @@ window.onload = function () {
         render: {
           strokeStyle: "#ffffff",
           sprite: {
-            texture: "../assets/images/tentacleSegmentRotated.png",
+            texture: "../Assets/images/tentacleSegmentRotated.png",
             xScale: 0.2,
             yScale: 0.2,
           },
@@ -221,7 +221,7 @@ window.onload = function () {
       render: {
         strokeStyle: "#ffffff",
         sprite: {
-          texture: "../assets/images/tentacleTipRotated.png",
+          texture: "../Assets/images/tentacleTipRotated.png",
           xScale: 0.15,
           yScale: 0.2,
         },
@@ -290,7 +290,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/netTexture.png",
+          texture: "../Assets/images/netTexture.png",
           xScale: 1.6,
           yScale: 2,
         },
@@ -315,7 +315,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/turtle.png",
+          texture: "../Assets/images/turtle.png",
           xScale: 0.4,
           yScale: 0.4,
         },
@@ -333,7 +333,7 @@ window.onload = function () {
       strokeStyle: "green",
       lineWidth: 0,
       sprite: {
-        texture: "../assets/images/stingRay.png",
+        texture: "../Assets/images/stingRay.png",
         xScale: 0.4,
         yScale: 0.4,
       },
@@ -350,7 +350,7 @@ window.onload = function () {
       strokeStyle: "green",
       lineWidth: 0,
       sprite: {
-        texture: "../assets/images/shark.png",
+        texture: "../Assets/images/shark.png",
         xScale: 0.4,
         yScale: 0.4,
       },
@@ -367,7 +367,7 @@ window.onload = function () {
       strokeStyle: "green",
       lineWidth: 0,
       sprite: {
-        texture: "../assets/images/dolphin.png",
+        texture: "../Assets/images/dolphin.png",
         xScale: 0.4,
         yScale: 0.4,
       },
@@ -384,7 +384,7 @@ window.onload = function () {
       strokeStyle: "green",
       lineWidth: 0,
       sprite: {
-        texture: "../assets/images/whaleshark.png",
+        texture: "../Assets/images/whaleshark.png",
         xScale: 0.4,
         yScale: 0.4,
       },

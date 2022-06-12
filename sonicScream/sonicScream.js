@@ -311,7 +311,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/shipRight.png",
+          texture: "../Assets/images/sonicScream/shipRight.png",
           xScale: 0.5,
           yScale: 0.5,
           yOffset: 0.15,
@@ -373,7 +373,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/bg2.png",
+          texture: "../Assets/images/sonicScream/bg2.png",
           xScale: 1.6,
           yScale: 1.2,
         },
@@ -401,7 +401,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/originalHair.png",
+          texture: "../Assets/images/sonicScream/originalhair.png",
           xScale: 0.15,
           yScale: 0.15,
         },
@@ -436,7 +436,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/bubble.png",
+          texture: "../Assets/images/sonicScream/bubble.png",
           xScale: 0.3,
           yScale: 0.3,
         },
@@ -472,7 +472,7 @@ window.onload = function () {
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
-          texture: "../assets/images/sonicScream/sonicScream1.png",
+          texture: "../Assets/images/sonicScream/sonicScream1.png",
           xScale: 0.1,
           yScale: 0.1,
         },
@@ -657,7 +657,7 @@ window.onload = function () {
           y: shipCastor.velocity.y,
         });
         shipBody.render.sprite.texture =
-          "../assets/images/sonicScream/shipRight.png";
+          "../Assets/images/sonicScream/shipRight.png";
       } else {
         Body.setVelocity(shipCastor, {
           x: -SHIPSPEED,
@@ -672,7 +672,7 @@ window.onload = function () {
           y: shipCastor.velocity.y,
         });
         shipBody.render.sprite.texture =
-          "../assets/images/sonicScream/shipLeft.png";
+          "../Assets/images/sonicScream/shipLeft.png";
       } else {
         Body.setVelocity(shipCastor, {
           x: SHIPSPEED,
