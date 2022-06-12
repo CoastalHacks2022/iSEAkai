@@ -3,6 +3,7 @@ body {
     background-image: url('../Assets/images/logging.jpg');
     background-repeat: no-repeat;
     background-position: center;
+    font-family: 'Original Surfer', cursive;
 }
 
 #container {
@@ -16,4 +17,5 @@ body {
 
 button {
     cursor: pointer;
+    font-family: 'Original Surfer', cursive;
 }
