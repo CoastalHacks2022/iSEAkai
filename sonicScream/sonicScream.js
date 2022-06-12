@@ -1,7 +1,14 @@
 // CONSTANTS
-const SHIPOFFSET = 100;
+const SHIPOFFSET = 150;
 const SHIPSPEED = 2;
 const BARRIERSPACE = 100;
+const SHIPPROJECTILECOUNTDOWN = 100;
+const SHIPPROJECTILESPEED = 10;
+
+const maxSpeed = {
+  x: 5,
+  y: 5,
+};
 
 // VARIABLES
 var gameStats = {
@@ -13,6 +20,8 @@ var boatMovement = {
   left: false,
   speed: SHIPSPEED,
 };
+
+var shipProjectileTimer = 0;
 
 // MATTER JS
 
@@ -60,10 +69,11 @@ window.onload = function () {
   //////////////// COLLISION FILTERING ////////////////
   var defaultCategory = 0x0001,
     shipBodyCategory = 0x0002,
-    rozxieBodyCategory = 0x0004,
-    playerCategory = 0x0008,
-    waveCategory = 0x0010,
-    projectileCategory = 0x0020;
+    shipBeamCategory = 0x0004,
+    rozxieBodyCategory = 0x0008,
+    playerCategory = 0x0010,
+    waveCategory = 0x0020,
+    projectileCategory = 0x0040;
 
   //////////////// MOUSE ////////////////
 
@@ -183,8 +193,8 @@ window.onload = function () {
     20,
     {
       collisionFilter: {
-        category: shipBodyCategory,
-        mask: shipBodyCategory,
+        category: shipBeamCategory,
+        mask: shipBeamCategory,
       },
       isStatic: true,
       friction: 0.8,
@@ -204,8 +214,8 @@ window.onload = function () {
     20,
     {
       collisionFilter: {
-        category: shipBodyCategory,
-        mask: shipBodyCategory,
+        category: shipBeamCategory,
+        mask: shipBeamCategory,
       },
       isStatic: true,
       friction: 0.8,
@@ -225,8 +235,8 @@ window.onload = function () {
     80,
     {
       collisionFilter: {
-        category: shipBodyCategory,
-        mask: shipBodyCategory,
+        category: shipBeamCategory,
+        mask: shipBeamCategory,
       },
       isStatic: true,
       render: {
@@ -245,8 +255,8 @@ window.onload = function () {
     80,
     {
       collisionFilter: {
-        category: shipBodyCategory,
-        mask: shipBodyCategory,
+        category: shipBeamCategory,
+        mask: shipBeamCategory,
       },
       isStatic: true,
       render: {
@@ -265,8 +275,8 @@ window.onload = function () {
     20,
     {
       collisionFilter: {
-        category: shipBodyCategory,
-        mask: shipBodyCategory,
+        category: shipBeamCategory,
+        mask: shipBeamCategory,
       },
       // isStatic: true,
       render: {
@@ -285,8 +295,8 @@ window.onload = function () {
     20,
     {
       collisionFilter: {
-        category: shipBodyCategory | playerCategory,
-        mask: shipBodyCategory | playerCategory,
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
       },
       render: {
         fillStyle: "#36c247",
@@ -389,26 +399,41 @@ window.onload = function () {
   var group = Body.nextGroup(true);
   var shipProjectiles = Composite.create({ label: "shipProjectiles" });
 
-  function createShipProjectile(x, y, angle) {
-    var shipProjectile = Bodies.cicle(x, y, 30, {
+  Composite.add(engine.world, shipProjectiles);
+
+  function createShipProjectile(x, y, angle, left) {
+    var spawnX = x;
+    if (left) {
+      spawnX += 50;
+    } else {
+      spawnX -= 50;
+    }
+
+    var shipProjectile = Bodies.circle(spawnX, y, 10, {
       collisionFilter: {
-        category: rozxieBodyCategory | projectileCategory,
-        mask: rozxieBodyCategory | projectileCategory,
+        category: rozxieBodyCategory,
+        mask: rozxieBodyCategory,
       },
-      isStatic: true,
+      label: "shipProjectile",
+      inertia: Infinity,
       render: {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
           texture: "../assets/images/sonicScream/bubble.png",
-          xScale: 0.5,
-          yScale: 0.5,
+          xScale: 0.3,
+          yScale: 0.3,
         },
       },
     });
 
-    Composite.add(engine.world, shipProjectile);
+    Body.setVelocity(shipProjectile, {
+      x: Math.cos(angle) * SHIPPROJECTILESPEED,
+      y: Math.sin(angle) * SHIPPROJECTILESPEED,
+    });
+
+    Composite.add(shipProjectiles, shipProjectile);
   }
 
   /////////////// ROZXIE PROJECTILES ///////////////
@@ -416,28 +441,35 @@ window.onload = function () {
   var group = Body.nextGroup(true);
   var rozxieProjectiles = Composite.create({ label: "rozxieProjectiles" });
 
-  function createRozxieProjectile(x, y, angle) {
-    var rozxieProjectile = Bodies.cicle(x, y, 30, {
+  Composite.add(engine.world, rozxieProjectiles);
+
+  function createRozxieProjectile(x, y) {
+    var rozxieProjectile = Bodies.circle(x, y, 10, {
       collisionFilter: {
-        category: shipBodyCategory | projectileCategory,
-        mask: shipBodyCategory | projectileCategory,
+        category: shipBodyCategory,
+        mask: shipBodyCategory,
       },
-      isStatic: true,
+      // isStatic: true,
+      label: "rozxieProjectile",
+      inertia: Infinity,
       render: {
         fillStyle: "#36c247",
         strokeStyle: "green",
         lineWidth: 0,
         sprite: {
           texture: "../assets/images/sonicScream/sonicScream1.png",
-          xScale: 0.5,
-          yScale: 0.5,
+          xScale: 0.1,
+          yScale: 0.1,
         },
       },
     });
 
-    force;
+    Body.setVelocity(rozxieProjectile, {
+      x: 0,
+      y: -10,
+    });
 
-    Composite.add(engine.world, rozxieProjectile);
+    Composite.add(rozxieProjectiles, rozxieProjectile);
   }
 
   /////////////// PROJECTILE DESPAWN BARRIER ///////////////
@@ -452,8 +484,8 @@ window.onload = function () {
     50,
     {
       collisionFilter: {
-        category: projectileCategory,
-        mask: projectileCategory,
+        category: rozxieBodyCategory | shipBodyCategory,
+        mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
       isSensor: true,
@@ -473,8 +505,8 @@ window.onload = function () {
     50,
     {
       collisionFilter: {
-        category: projectileCategory,
-        mask: projectileCategory,
+        category: rozxieBodyCategory | shipBodyCategory,
+        mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
       isSensor: true,
@@ -494,8 +526,8 @@ window.onload = function () {
     render.canvas.height + BARRIERSPACE * 2,
     {
       collisionFilter: {
-        category: projectileCategory,
-        mask: projectileCategory,
+        category: rozxieBodyCategory | shipBodyCategory,
+        mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
       isSensor: true,
@@ -515,11 +547,11 @@ window.onload = function () {
     render.canvas.height + BARRIERSPACE * 2,
     {
       collisionFilter: {
-        category: projectileCategory,
-        mask: projectileCategory,
+        category: rozxieBodyCategory | shipBodyCategory,
+        mask: rozxieBodyCategory | shipBodyCategory,
       },
       isStatic: true,
-      isSensor: true,
+      // isSensor: true,
       render: {
         fillStyle: "#36c247",
         strokeStyle: "green",
@@ -536,22 +568,40 @@ window.onload = function () {
 
   /////////////// EVENTS ///////////////
 
-  Events.on(engine, "collisionStart", function (event) {
-    var pairs = event.pairs;
-
+  Events.on(engine, "collisionStart", (_) => {
     // https://stackoverflow.com/questions/47207541/matter-js-how-to-remove-bodies-after-collision
 
-    for (var i = 0, j = pairs.length; i != j; ++i) {
-      var pair = pairs[i];
-
+    _.pairs.forEach((pair) => {
       // if the projectile is in the despawn barrier, remove it
       if (pair.bodyA.parent === despawnBarrier) {
-        World.remove(engine.world, pair.bodyA);
+        if (pair.bodyB.label === "rozxieProjectile") {
+          World.remove(rozxieProjectiles, pair.bodyB);
+        } else {
+          World.remove(shipProjectiles, pair.bodyB);
+        }
+        console.log("removed projectile");
       }
       if (pair.bodyB.parent === despawnBarrier) {
-        World.remove(engine.world, pair.bodyB);
+        if (pair.bodyB.label === "rozxieProjectile") {
+          World.remove(rozxieProjectiles, pair.bodyA);
+        } else {
+          World.remove(shipProjectiles, pair.bodyA);
+        }
+        console.log("removed projectile");
       }
-    }
+
+      if (pair.bodyA === shipBody) {
+        console.log("ship hit");
+        console.log(pair.bodyB.label);
+        World.remove(rozxieProjectiles, pair.bodyB);
+      }
+
+      if (pair.bodyA === rozxie) {
+        console.log("rozxie hit");
+        console.log(pair.bodyB.label);
+        World.remove(shipProjectiles, pair.bodyB);
+      }
+    });
   });
 
   // Events.on(engine, "collisionEnd", function (event) {
@@ -572,19 +622,17 @@ window.onload = function () {
       y: rozxie.velocity.y - 0.25 * gravity.y,
     });
 
-
     // move the boat
     if (boatMovement.left) {
       if (shipCastor.position.x < 50) {
-        console.log("lefting1")
         boatMovement.left = false;
         Body.setVelocity(shipCastor, {
           x: shipCastor.velocity.x - 0.5,
           y: shipCastor.velocity.y,
         });
-        shipBody.render.sprite.texture="../assets/images/sonicScream/shipRight.png";
+        shipBody.render.sprite.texture =
+          "../assets/images/sonicScream/shipRight.png";
       } else {
-        console.log("lefting2")
         Body.setVelocity(shipCastor, {
           x: -SHIPSPEED,
           y: shipCastor.velocity.y,
@@ -592,15 +640,14 @@ window.onload = function () {
       }
     } else {
       if (shipCastor.position.x > render.canvas.width - 150) {
-        console.log("right1")
         boatMovement.left = true;
         Body.setVelocity(shipCastor, {
           x: shipCastor.velocity.x + 0.5,
           y: shipCastor.velocity.y,
         });
-        shipBody.render.sprite.texture="../assets/images/sonicScream/shipLeft.png";
+        shipBody.render.sprite.texture =
+          "../assets/images/sonicScream/shipLeft.png";
       } else {
-        console.log("right2")
         Body.setVelocity(shipCastor, {
           x: SHIPSPEED,
           y: shipCastor.velocity.y,
@@ -609,6 +656,49 @@ window.onload = function () {
     }
 
     // Give the projectiles zero gravity
+    rozxieProjectiles.bodies.forEach(function (projectile) {
+      Body.applyForce(projectile, projectile.position, {
+        x: 0,
+        y: -projectile.mass * gravity.y * 0.001,
+      });
+    });
+
+    shipProjectiles.bodies.forEach(function (projectile) {
+      Body.applyForce(projectile, projectile.position, {
+        x: 0,
+        y: -projectile.mass * gravity.y * 0.001,
+      });
+    });
+
+    // Ship projectile timer
+    shipProjectileTimer += 1;
+
+    if (shipProjectileTimer > SHIPPROJECTILECOUNTDOWN) {
+      shipProjectileTimer = 0;
+
+      // fire projectile
+      createShipProjectile(
+        shipBody.position.x,
+        shipBody.position.y,
+        90 / 180 * Math.PI,
+        boatMovement.left
+      );
+      createShipProjectile(
+        shipBody.position.x,
+        shipBody.position.y,
+        45 / 180 * Math.PI,
+        boatMovement.left
+      );
+
+      createShipProjectile(
+        shipBody.position.x,
+        shipBody.position.y,
+        135 / 180 * Math.PI,
+        boatMovement.left
+      );
+
+      console.log("fired ship projectile");
+    }
 
     if (!mouse.position.x) {
       return;
@@ -616,11 +706,6 @@ window.onload = function () {
   });
 
   //////////////////// CONTROLS ////////////////////
-
-  var maxSpeed = {
-    x: 10,
-    y: 10,
-  };
 
   document.addEventListener("keypress", function (e) {
     var addedVelocity = {
@@ -646,6 +731,7 @@ window.onload = function () {
 
     if (e.key === " ") {
       // shoot projectile
+      createRozxieProjectile(rozxie.position.x, rozxie.position.y);
     }
 
     finalVelocity = {
