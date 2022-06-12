@@ -152,7 +152,7 @@ Promise.allSettled([
   loadTexture("./wall.png"),
   loadTexture("./target.png"),
   loadTexture("./box.png"),
-  loadTexture("./player.png"),
+  loadTexture("./whaletail.png"),
   loadTexture("./weed.png"),
 ]).then((results) => {
   const [
@@ -245,7 +245,7 @@ Promise.allSettled([
 
     if (hasWon(targets, boxes)) {
       document.querySelector("#message").innerHTML = "You've won!";
-      // ADD LINK HERE
+      location.href = '../freeAnimals/freeAnimals.html';
     }
 
     render();
