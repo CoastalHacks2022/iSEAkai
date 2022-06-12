@@ -66,9 +66,9 @@ window.onload = function () {
     options: {
       width: 800,
       height: 600,
-      showAngleIndicator: true,
-      showCollisions: true,
-      showVelocity: true,
+      // showAngleIndicator: true,
+      // showCollisions: true,
+      // showVelocity: true,
       wireframes: false,
       background: "#2475bd",
     },
