@@ -5,6 +5,12 @@ window.onload = function () {
     const gameContainer = document.getElementById("gameContainer");
     const happyEnd = document.getElementById("happy-end");
     const yay = document.getElementById("yay");
+    const startButton = document.getElementById("startBtn");
+    const modal = document.querySelector(".modal");
+
+    startButton.addEventListener("click", function() {
+        modal.style.display = "none";
+    })
 
     var numTrashDropped = 0;
     var numTrash = dragItems.length;
