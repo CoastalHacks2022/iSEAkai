@@ -1,6 +1,8 @@
 # iSEAkai
 Coastal Environmental problem awareness game
 
+Try it out here: https://iseakai.vercel.app/
+
 ## Audio 
 - many sounds taken from [soundscrate](https://soundscrate.com/)
 
